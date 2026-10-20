@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/account-storage.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#167D45">
+    <title>Sales & POS | BiasharaExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .module-content { padding: 24px; max-width: 1500px; margin: auto; }
+        .module-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:24px; }
+        .module-heading h1 { margin:0 0 6px; }
+        .module-subtitle { color:var(--text-secondary); margin:0; }
+        .sales-layout { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr); gap:22px; align-items:start; }
+        .sales-panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; min-width:0; }
+        .sales-panel h2 { margin:0 0 18px; font-size:18px; }
+        .sales-field { display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+        .sales-field label { font-size:13px; font-weight:600; }
+        .sales-field input,.sales-field select { width:100%; min-height:43px; padding:10px 12px; border:1px solid var(--border); border-radius:9px; background:var(--surface); color:var(--text-primary); font:inherit; }
+        .sales-fields-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .sales-button { min-height:42px; padding:10px 16px; border:0; border-radius:9px; font:inherit; font-weight:600; cursor:pointer; }
+        .sales-button-primary { background:var(--primary); color:#fff; }
+        .sales-button-secondary { background:var(--primary-light); color:var(--primary-dark); }
+        .sales-button:disabled { opacity:.5; cursor:not-allowed; }
+        .sales-add-row { display:grid; grid-template-columns:minmax(0,1fr) 90px auto; gap:10px; align-items:end; }
+        .sales-table-wrap { width:100%; overflow-x:auto; margin-top:18px; }
+        .sales-table { width:100%; border-collapse:collapse; min-width:470px; }
+        .sales-panel, .sales-field { min-width:0; }
+        .sales-field input, .sales-field select { box-sizing:border-box; }
+        .sales-button { overflow-wrap:anywhere; }
+        .sales-table th,.sales-table td { padding:12px 10px; border-bottom:1px solid var(--border); text-align:left; font-size:13px; }
+        .sales-table th { color:var(--text-secondary); font-weight:600; }
+        .sales-table td:last-child,.sales-table th:last-child { text-align:right; }
+        .sales-remove { border:0; background:transparent; color:var(--loss); cursor:pointer; font-weight:700; font-size:16px; }
+        .sales-empty { padding:24px 10px; text-align:center; color:var(--text-secondary); }
+        .sales-summary { display:grid; gap:14px; margin:20px 0; }
+        .sales-total-row { display:flex; justify-content:space-between; gap:12px; align-items:center; }
+        .sales-grand-total { padding-top:15px; border-top:1px solid var(--border); font-size:20px; font-weight:700; }
+        .sales-notice { display:none; padding:12px 14px; border-radius:9px; margin-bottom:16px; font-size:14px; }
+        .sales-notice.success { display:block; background:var(--primary-light); color:var(--primary-dark); }
+        .sales-notice.error { display:block; background:#FDECEC; color:var(--loss); }
+        .sales-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .sales-history { margin-top:22px; }
+        .sales-history-list { display:grid; gap:10px; }
+        .sales-history-item { display:flex; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+        .sales-history-item small { display:block; color:var(--text-secondary); margin-top:4px; }
+        .sales-history-item strong { white-space:nowrap; }
+        @media(max-width:800px) { .sales-layout { grid-template-columns:1fr; } .module-content { padding:16px; } }
+        @media(max-width:480px) { .sales-fields-row { grid-template-columns:1fr; gap:0; } .sales-add-row { grid-template-columns:minmax(0,1fr) 78px; } .sales-add-row button { grid-column:1/-1; width:100%; } .sales-panel { padding:15px; } .sales-actions { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+    <main class="module-content">
+        <header class="module-heading">
+            <div>
+                <h1>Sales & POS</h1>
+                <p class="module-subtitle">Record sales, manage the cart and track completed transactions.</p>
+            </div>
+            <a class="sales-button sales-button-secondary" href="../index.html" style="display:inline-flex;align-items:center;text-decoration:none;">Back to Dashboard</a>
+        </header>
+
+        <div id="salesNotice" class="sales-notice" role="status" aria-live="polite"></div>
+
+        <div class="sales-layout">
+            <section class="sales-panel">
+                <h2>Add products to sale</h2>
+                <form id="addToCartForm">
+                    <div class="sales-field">
+                        <label for="productName">Product from inventory</label>
+                        <select id="productName" required>
+                            <option value="">Loading inventory...</option>
+                        </select>
+                        <small class="module-subtitle">Only products registered in Products &amp; Inventory can be sold.</small>
+                    </div>
+                    <div class="sales-add-row">
+                        <div class="sales-field" style="margin:0;">
+                            <label for="productQuantity">Quantity</label>
+                            <input id="productQuantity" type="number" min="0.01" step="0.01" value="1" required>
+                        </div>
+                        <button class="sales-button sales-button-primary" type="submit">Add to cart</button>
+                    </div>
+                    <div class="sales-fields-row" style="margin-top:18px;">
+                        <div class="sales-field">
+                            <label for="productPrice">Unit selling price (KSh)</label>
+                            <input id="productPrice" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                        </div>
+                        <div class="sales-field">
+                            <label for="productCost">Weighted-average unit cost (KSh)</label>
+                            <input id="productCost" type="number" min="0" step="0.01" placeholder="0.00" readonly>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="sales-table-wrap">
+                    <table class="sales-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartItems">
+                            <tr><td colspan="5" class="sales-empty">Your cart is empty. Add a product to begin.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="sales-panel">
+                <h2>Complete sale</h2>
+                <div class="sales-fields-row">
+                    <div class="sales-field">
+                        <label for="saleDate">Sale date</label>
+                        <input id="saleDate" type="date" required>
+                    </div>
+                    <div class="sales-field">
+                        <label for="paymentMethod">Payment method</label>
+                        <select id="paymentMethod">
+                            <option value="Cash">Cash</option>
+                            <option value="M-Pesa">M-Pesa</option>
+                            <option value="Bank">Bank</option>
+                            <option value="Credit">Customer credit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="sales-field">
+                    <label for="customerName">Customer name (optional)</label>
+                    <input id="customerName" type="text" maxlength="100" placeholder="Walk-in customer">
+                </div>
+                <div class="sales-field" id="amountPaidField">
+                    <label for="amountPaid">Amount received (KSh)</label>
+                    <input id="amountPaid" type="number" min="0" step="0.01" value="0">
+                </div>
+
+                <div class="sales-summary">
+                    <div class="sales-total-row"><span>Subtotal</span><strong id="saleSubtotal">KSh 0.00</strong></div>
+                    <div class="sales-total-row"><span>Items</span><strong id="saleItemCount">0</strong></div>
+                    <div class="sales-total-row"><span>Change</span><strong id="saleChange">KSh 0.00</strong></div>
+                    <div class="sales-total-row sales-grand-total"><span>Total</span><strong id="saleTotal">KSh 0.00</strong></div>
+                </div>
+
+                <div class="sales-actions">
+                    <button type="button" id="clearCartButton" class="sales-button sales-button-secondary">Clear cart</button>
+                    <button type="button" id="completeSaleButton" class="sales-button sales-button-primary">Complete sale</button>
+                </div>
+                <p class="module-subtitle" style="font-size:12px;margin-top:14px;">Sales recorded on this page are saved in this browser on this device.</p>
+            </section>
+        </div>
+
+        <section class="sales-panel sales-history">
+            <h2>Recent sales on this device</h2>
+            <div id="salesHistory" class="sales-history-list">
+                <p class="sales-empty">No sales recorded yet.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/database/sqlite-adapter.bundle.js"></script>
+<script src="../js/sync-worker.js"></script>
+<script src="../js/sales.js"></script>
+
+<script src="../js/date-rollover.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

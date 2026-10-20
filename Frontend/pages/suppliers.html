@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/account-storage.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#167D45">
+    <title>Suppliers | BiasharaExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .contact-page{padding:24px;max-width:1200px;margin:auto}
+        .contact-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+        .contact-heading h1{margin:0 0 6px}
+        .contact-subtitle{color:var(--text-secondary);margin:0}
+        .contact-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+        .contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+        .contact-field{display:flex;flex-direction:column;gap:7px;min-width:0}
+        .contact-field label{font-size:13px;font-weight:600}
+        .contact-field input,.contact-field textarea{width:100%;min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text-primary);font:inherit}
+        .contact-field textarea{min-height:80px;resize:vertical}
+        .contact-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+        .contact-button{min-height:41px;padding:10px 15px;border:0;border-radius:9px;font:inherit;font-weight:600;cursor:pointer}
+        .contact-primary{background:var(--primary);color:white}
+        .contact-secondary{background:var(--primary-light);color:var(--primary-dark)}
+        .contact-toolbar{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+        .contact-search{flex:1;min-width:200px;min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text-primary);font:inherit}
+        .contact-table-wrap{overflow-x:auto}
+        .contact-table{width:100%;border-collapse:collapse;min-width:650px}
+        .contact-table th,.contact-table td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+        .contact-table th{color:var(--text-secondary);font-weight:600}
+        .contact-row-action{border:0;background:transparent;color:var(--primary);font:inherit;font-weight:600;cursor:pointer;margin-right:10px}
+        .contact-delete{color:var(--loss)}
+        .contact-message{color:var(--text-secondary);font-size:13px;margin-top:12px}
+        .contact-count{font-size:14px;color:var(--text-secondary);margin-bottom:12px}
+        @media(max-width:650px){.contact-page{padding:14px}.contact-grid{grid-template-columns:1fr}.contact-panel{padding:15px}}
+    </style>
+</head>
+<body data-contact-type="suppliers">
+<main class="contact-page">
+    <header class="contact-heading">
+        <div>
+            <h1>Suppliers</h1>
+            <p class="contact-subtitle">Manage your business contacts in one place.</p>
+        </div>
+        <a class="contact-button contact-secondary" href="../index.html">Back to Dashboard</a>
+    </header>
+
+    <section class="contact-panel">
+        <h2 id="contactFormTitle">Register supplier</h2>
+        <form id="contactForm">
+            <input type="hidden" id="contactEditId">
+            <div class="contact-grid">
+                <div class="contact-field">
+                    <label for="contactName">Full name / business name *</label>
+                    <input id="contactName" maxlength="120" required autocomplete="name">
+                </div>
+                <div class="contact-field">
+                    <label for="contactPhone">Phone number</label>
+                    <input id="contactPhone" type="tel" maxlength="30" autocomplete="tel">
+                </div>
+                <div class="contact-field">
+                    <label for="contactLocation">Location</label>
+                    <input id="contactLocation" maxlength="150" placeholder="Area, market or town">
+                </div>
+                <div class="contact-field">
+                    <label for="contactNotes">Notes</label>
+                    <textarea id="contactNotes" maxlength="500" placeholder="Optional information"></textarea>
+                </div>
+            </div>
+            <div class="contact-actions">
+                <button class="contact-button contact-primary" id="contactSaveButton" type="submit">Save supplier</button>
+                <button class="contact-button contact-secondary" id="contactCancelButton" type="button" hidden>Cancel edit</button>
+            </div>
+        </form>
+        <p class="contact-message" id="contactMessage" role="status" aria-live="polite">Preparing local database...</p>
+    </section>
+
+    <section class="contact-panel">
+        <h2>Suppliers Register</h2>
+        <div class="contact-toolbar">
+            <input class="contact-search" id="contactSearch" type="search" placeholder="Search by name, phone or location">
+        </div>
+        <p class="contact-count" id="contactCount">0 contacts</p>
+        <div class="contact-table-wrap">
+            <table class="contact-table">
+                <thead>
+                    <tr><th>Name</th><th>Phone</th><th>Location</th><th>Notes</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="contactRows">
+                    <tr><td colspan="5">Loading contacts...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script src="../js/database/sqlite-adapter.bundle.js"></script>
+<script src="../js/sync-worker.js"></script>
+<script src="../js/contacts.js"></script>
+<script src="../js/date-rollover.js"></script>
+</body>
+</html>
+
+
+
+

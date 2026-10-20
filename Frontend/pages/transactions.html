@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/account-storage.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Transactions | BiasharaExpress</title>
+    <style>
+        :root {
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #172b4d;
+            background: #f4f7fb;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; }
+        header {
+            background: #0b1f3a;
+            color: white;
+            padding: 22px max(20px, calc((100% - 1200px)/2));
+        }
+        header h1 { margin: 0 0 6px; font-size: 25px; }
+        header p { margin: 0; color: #c8d4e5; }
+        main { max-width: 1200px; margin: 28px auto; padding: 0 18px; }
+        .toolbar, .summary, .table-card {
+            background: white;
+            border: 1px solid #e1e7ef;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: end;
+            gap: 12px;
+        }
+        .field { display: flex; flex-direction: column; gap: 6px; flex: 1 1 150px; }
+        label { font-size: 13px; font-weight: 600; color: #52627a; }
+        input, select {
+            width: 100%;
+            min-height: 42px;
+            padding: 9px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            color: #172b4d;
+            font: inherit;
+        }
+        button, .back-link {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 42px;
+            padding: 9px 14px;
+            border: 0;
+            border-radius: 7px;
+            background: #0b1f3a;
+            color: white;
+            text-decoration: none;
+            font: inherit;
+            cursor: pointer;
+        }
+        button.secondary { background: #e8eef6; color: #172b4d; }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        .metric small { display: block; color: #64748b; margin-bottom: 8px; }
+        .metric strong { font-size: 21px; overflow-wrap: anywhere; }
+        .table-card { overflow: hidden; }
+        .table-heading {
+            display: flex; flex-wrap: wrap; justify-content: space-between;
+            align-items: center; gap: 10px; margin-bottom: 14px;
+        }
+        .table-heading h2 { margin: 0; font-size: 19px; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 760px; }
+        th, td { padding: 13px 12px; border-bottom: 1px solid #edf0f5; text-align: left; }
+        th { background: #f7f9fc; color: #52627a; font-size: 12px; text-transform: uppercase; }
+        td { font-size: 14px; }
+        .amount { white-space: nowrap; font-weight: 600; }
+        .positive { color: #147d4b; }
+        .negative { color: #b42318; }
+        .muted { color: #64748b; }
+        .status {
+            display: inline-block; padding: 4px 8px; border-radius: 20px;
+            background: #edf2f7; font-size: 12px;
+        }
+        #message { color: #52627a; margin: 8px 0 0; font-size: 13px; }
+        .empty { text-align: center; padding: 35px; color: #64748b; }
+        @media (max-width: 600px) {
+            main { margin-top: 16px; padding: 0 10px; }
+            .toolbar, .summary, .table-card { padding: 13px; }
+            header { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>All Transactions</h1>
+        <p>Review your business activity</p>
+    </header>
+
+    <main>
+        <div style="margin-bottom:16px">
+            <a class="back-link" href="../index.html">← Back to Dashboard</a>
+        </div>
+
+        <section class="toolbar" aria-label="Transaction filters">
+            <div class="field">
+                <label for="search">Search transactions</label>
+                <input id="search" type="search" placeholder="Description, ID or payment method">
+            </div>
+            <div class="field">
+                <label for="typeFilter">Transaction type</label>
+                <select id="typeFilter">
+                    <option value="all">All types</option>
+                    <option value="Sale">Sales</option>
+                    <option value="Purchase">Purchases</option>
+                    <option value="Capital">Capital</option>
+                    <option value="Expense">Expenses</option>
+                    <option value="Withdrawal">Withdrawals</option>
+                    <option value="Customer debt">Customer debts</option>
+                    <option value="Supplier creditor">Supplier creditors</option>
+                    <option value="Customer repayment">Customer repayments</option>
+                    <option value="Supplier repayment">Supplier repayments</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="fromDate">From date</label>
+                <input id="fromDate" type="date">
+            </div>
+            <div class="field">
+                <label for="toDate">To date</label>
+                <input id="toDate" type="date">
+            </div>
+            <button type="button" id="resetFilters" class="secondary">Clear filters</button>
+            <button type="button" id="exportCsv">Export CSV</button>
+        </section>
+
+        <section class="summary" aria-label="Transaction summary">
+            <div class="metric"><small>Transactions shown</small><strong id="count">0</strong></div>
+            <div class="metric"><small>Money received / income</small><strong id="income">KSh 0.00</strong></div>
+            <div class="metric"><small>Money paid / outflow</small><strong id="outflow">KSh 0.00</strong></div>
+        </section>
+
+        <section class="table-card">
+            <div class="table-heading">
+                <h2>Transaction History</h2>
+                <span class="muted" id="lastUpdated"></span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Payment method</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rows">
+                        <tr><td colspan="6" class="empty">Loading transactions…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p id="message">Records are read from your existing saved business data.</p>
+        </section>
+    </main>
+
+    <script src="../js/date-rollover.js"></script>
+    <script src="../js/database/sqlite-adapter.bundle.js"></script>
+<script src="../js/sync-worker.js"></script>
+<script src="../js/transactions.js"></script>
+</body>
+</html>
+
+
+
+
+

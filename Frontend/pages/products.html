@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/account-storage.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#167D45">
+    <title>Products & Inventory | BiasharaExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .module-content{padding:24px;max-width:1500px;margin:auto}
+        .module-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+        .module-heading h1{margin:0 0 6px}.module-subtitle{color:var(--text-secondary);margin:0}
+        .inventory-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+        .inventory-panel h2{font-size:18px;margin:0 0 18px}
+        .inventory-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+        .inventory-field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+        .inventory-field label{font-size:13px;font-weight:600}
+        .inventory-field input,.inventory-field select{width:100%;min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text-primary);font:inherit}
+        .inventory-button{min-height:41px;padding:10px 15px;border:0;border-radius:9px;font:inherit;font-weight:600;cursor:pointer}
+        .inventory-primary{background:var(--primary);color:white}.inventory-secondary{background:var(--primary-light);color:var(--primary-dark)}
+        .inventory-toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+        .inventory-search{flex:1;min-width:200px;min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;font:inherit}
+        .inventory-table-wrap{overflow-x:auto}
+        .inventory-table{width:100%;border-collapse:collapse;min-width:720px}
+        .inventory-table th,.inventory-table td{padding:13px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+        .inventory-table th{color:var(--text-secondary);font-weight:600}
+        .inventory-table td:last-child{text-align:right;white-space:nowrap}
+        .inventory-action{border:0;background:transparent;color:var(--primary);font:inherit;font-weight:600;cursor:pointer;margin-left:8px}
+        .inventory-delete{color:var(--loss)}
+        .inventory-status{display:inline-block;padding:4px 8px;border-radius:20px;background:var(--primary-light);color:var(--primary-dark);font-size:12px}
+        .inventory-low{background:#FFF4D6;color:#8A5A00}
+        .inventory-notice{display:none;padding:12px 14px;border-radius:9px;margin-bottom:16px;font-size:14px}
+        .inventory-notice.success{display:block;background:var(--primary-light);color:var(--primary-dark)}
+        .inventory-notice.error{display:block;background:#FDECEC;color:var(--loss)}
+        .inventory-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:20px}
+        .inventory-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:17px}
+        .inventory-stat span{display:block;color:var(--text-secondary);font-size:13px;margin-bottom:8px}
+        .inventory-stat strong{font-size:22px}
+        .inventory-empty{text-align:center;padding:25px;color:var(--text-secondary)}
+        @media(max-width:700px){.module-content{padding:15px}.inventory-grid{grid-template-columns:1fr 1fr}.inventory-stats{grid-template-columns:1fr}.inventory-panel{padding:15px}}
+        @media(max-width:460px){.inventory-grid{grid-template-columns:1fr}.inventory-toolbar>*{width:100%}}
+    </style>
+</head>
+<body>
+<main class="module-content">
+    <header class="module-heading">
+        <div>
+            <h1>Products & Inventory</h1>
+            <p class="module-subtitle">Manage products, prices and stock quantities.</p>
+        </div>
+        <a href="../index.html" class="inventory-button inventory-secondary" style="display:inline-flex;align-items:center;text-decoration:none">Back to Dashboard</a>
+    </header>
+
+    <div id="inventoryNotice" class="inventory-notice" role="status" aria-live="polite"></div>
+
+    <section class="inventory-stats">
+        <div class="inventory-stat"><span>Total products</span><strong id="inventoryProductCount">0</strong></div>
+        <div class="inventory-stat"><span>Total units in stock</span><strong id="inventoryUnitCount">0</strong></div>
+        <div class="inventory-stat"><span>Low-stock products</span><strong id="inventoryLowCount">0</strong></div>
+    </section>
+
+    <section class="inventory-panel">
+        <h2 id="inventoryFormTitle">Add a product</h2>
+        <form id="inventoryForm">
+            <input type="hidden" id="inventoryEditId">
+            <div class="inventory-grid">
+                <div class="inventory-field">
+                    <label for="inventoryName">Product name *</label>
+                    <input id="inventoryName" type="text" maxlength="100" placeholder="e.g. Maize flour" required>
+                </div>
+                <div class="inventory-field">
+                    <label for="inventoryCategory">Category</label>
+                    <input id="inventoryCategory" type="text" maxlength="60" placeholder="e.g. Food">
+                </div>
+                <div class="inventory-field">
+                    <label for="inventoryUnit">Unit of measure *</label>
+                    <select id="inventoryUnit" required>
+                        <option value="pcs">Pieces</option>
+                        <option value="kg">Kilograms</option>
+                        <option value="g">Grams</option>
+                        <option value="litre">Litres</option>
+                        <option value="packet">Packets</option>
+                        <option value="crate">Crates</option>
+                        <option value="bag">Bags</option>
+                        <option value="bunch">Bunches</option>
+                    </select>
+                </div>
+                <div class="inventory-field">
+                    <label for="inventoryCost">Unit cost (KSh) *</label>
+                    <input id="inventoryCost" type="number" min="0" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="inventory-field">
+                    <label for="inventoryPrice">Selling price (KSh) *</label>
+                    <input id="inventoryPrice" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="inventory-field">
+                    <label for="inventoryStock">Current stock *</label>
+                    <input id="inventoryStock" type="number" min="0" step="0.01" placeholder="0" required>
+                </div>
+                <div class="inventory-field">
+                    <label for="inventoryLowStock">Low-stock alert level</label>
+                    <input id="inventoryLowStock" type="number" min="0" step="0.01" value="5">
+                </div>
+            </div>
+            <button class="inventory-button inventory-primary" type="submit" id="inventorySaveButton">Save product</button>
+            <button class="inventory-button inventory-secondary" type="button" id="inventoryCancelButton" hidden>Cancel editing</button>
+        </form>
+    </section>
+
+    <section class="inventory-panel">
+        <h2>Product list</h2>
+        <div class="inventory-toolbar">
+            <input class="inventory-search" id="inventorySearch" type="search" placeholder="Search by product name or category..." aria-label="Search products">
+            <button class="inventory-button inventory-secondary" id="inventoryExportButton" type="button">Export CSV</button>
+        </div>
+        <div class="inventory-table-wrap">
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Product</th><th>Category</th><th>Stock</th>
+                        <th>Unit cost</th><th>Selling price</th><th>Stock status</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryRows">
+                    <tr><td colspan="7" class="inventory-empty">No products added yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script src="../js/database/sqlite-adapter.bundle.js"></script>
+<script src="../js/sync-worker.js"></script>
+<script src="../js/inventory.js"></script>
+
+<script src="../js/date-rollover.js"></script>
+</body>
+</html>
+
+
+
+
+
+

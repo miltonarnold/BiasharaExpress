@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#167D45">
+    <title>Create Account | BiasharaExpress</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="register-page">
+    <main class="auth-layout">
+        <section class="auth-brand register-brand">
+            <a class="brand-mark" href="register.html" aria-label="BiasharaExpress home">BE</a>
+            <p class="eyebrow">YOUR BUSINESS. BETTER MANAGED.</p>
+            <h1>Every great business starts with a simple step.</h1>
+            <p>Manage your sales, stock, expenses and customer debts with BiasharaExpress.</p>
+            <div class="brand-highlight">
+                <span class="brand-highlight-icon">✓</span>
+                <span>One workspace for your business journey.</span>
+            </div>
+            <div class="brand-footer">BiasharaExpress · Simple business management</div>
+        </section>
+
+        <section class="auth-panel">
+            <div class="auth-form-wrap register-form-wrap">
+                <a class="mobile-brand" href="register.html">BE <span>BiasharaExpress</span></a>
+
+                <p class="eyebrow">GET STARTED</p>
+                <h2 id="stepHeading">Set up your business</h2>
+                <p class="muted" id="stepDescription">First, tell us about your business.</p>
+
+                <div class="wizard-progress" aria-label="Registration progress">
+                    <div class="wizard-progress-step active" data-progress="1">
+                        <span>1</span><small>Business</small>
+                    </div>
+                    <div class="wizard-progress-line"></div>
+                    <div class="wizard-progress-step" data-progress="2">
+                        <span>2</span><small>Your profile</small>
+                    </div>
+                    <div class="wizard-progress-line"></div>
+                    <div class="wizard-progress-step" data-progress="3">
+                        <span>3</span><small>Account</small>
+                    </div>
+                </div>
+
+                <form id="registerForm" novalidate>
+                    <section class="wizard-panel" data-step="1">
+                        <div class="field">
+                            <label for="businessName">Business name</label>
+                            <input id="businessName" name="businessName" maxlength="80"
+                                autocomplete="organization" required
+                                placeholder="e.g. Milton Fresh Produce">
+                        </div>
+                        <p class="step-hint">You can change your business details later in Settings.</p>
+                        <button class="primary-button wizard-next" type="button">Continue</button>
+                    </section>
+
+                    <section class="wizard-panel" data-step="2" hidden>
+                        <div class="field">
+                            <label for="ownerName">Your full name</label>
+                            <input id="ownerName" name="ownerName" maxlength="60"
+                                autocomplete="name" required placeholder="Enter your full name">
+                        </div>
+                        <div class="field">
+                            <label for="displayPreference">What should appear on your dashboard?</label>
+                            <select id="displayPreference" name="displayPreference" required>
+                                <option value="business">Business name</option>
+                                <option value="owner">My name</option>
+                            </select>
+                        </div>
+                        <div class="wizard-buttons">
+                            <button class="secondary-button wizard-back" type="button">Back</button>
+                            <button class="primary-button wizard-next" type="button">Continue</button>
+                        </div>
+                    </section>
+
+                    <section class="wizard-panel" data-step="3" hidden>
+                        <div class="field">
+                            <label for="email">Email address</label>
+                            <input id="email" name="email" type="email" autocomplete="email"
+                                required placeholder="you@example.com">
+                        </div>
+                        <div class="field">
+                            <label for="password">Create password</label>
+                            <input id="password" name="password" type="password"
+                                autocomplete="new-password" minlength="8" required
+                                placeholder="At least 8 characters">
+                            <small class="input-hint">Use at least 8 characters.</small>
+                        </div>
+                        <div class="field">
+                            <label for="confirmPassword">Confirm password</label>
+                            <input id="confirmPassword" name="confirmPassword" type="password"
+                                autocomplete="new-password" minlength="8" required
+                                placeholder="Enter the same password again">
+                        </div>
+                        <div class="wizard-buttons">
+                            <button class="secondary-button wizard-back" type="button">Back</button>
+                            <button class="primary-button" type="submit">Finish registration preview</button>
+                        </div>
+                    </section>
+
+                    <p id="registerMessage" class="form-message" role="status" aria-live="polite"></p>
+                </form>
+
+                <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+                <p class="security-note">Preview only. No account is created and your password is not stored.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/account-storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+    "use strict";
+
+    (() => {
+        const form = document.getElementById("registerForm");
+        const panels = Array.from(document.querySelectorAll(".wizard-panel"));
+        const progressSteps = Array.from(document.querySelectorAll(".wizard-progress-step"));
+        const heading = document.getElementById("stepHeading");
+        const description = document.getElementById("stepDescription");
+        const message = document.getElementById("registerMessage");
+
+        const stepContent = {
+            1: ["Set up your business", "First, tell us about your business."],
+            2: ["Create your profile", "Tell us who you are and how you want the dashboard to appear."],
+            3: ["Secure your account", "Choose the email and password you would use for your account."]
+        };
+
+        let currentStep = 1;
+
+        function showStep(step) {
+            currentStep = step;
+
+            panels.forEach(panel => {
+                panel.hidden = Number(panel.dataset.step) !== step;
+            });
+
+            progressSteps.forEach(item => {
+                const number = Number(item.dataset.progress);
+                item.classList.toggle("active", number === step);
+                item.classList.toggle("completed", number < step);
+
+                if (number === step) {
+                    item.setAttribute("aria-current", "step");
+                } else {
+                    item.removeAttribute("aria-current");
+                }
+            });
+
+            heading.textContent = stepContent[step][0];
+            description.textContent = stepContent[step][1];
+            message.textContent = "";
+
+            const firstInput = panels[step - 1].querySelector("input, select");
+            if (firstInput) firstInput.focus();
+        }
+
+        function validateCurrentStep() {
+            const panel = panels[currentStep - 1];
+            const fields = Array.from(panel.querySelectorAll("input, select"));
+
+            for (const field of fields) {
+                if (!field.checkValidity()) {
+                    field.reportValidity();
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        document.querySelectorAll(".wizard-next").forEach(button => {
+            button.addEventListener("click", () => {
+                if (!validateCurrentStep()) return;
+                showStep(Math.min(currentStep + 1, 3));
+            });
+        });
+
+        document.querySelectorAll(".wizard-back").forEach(button => {
+            button.addEventListener("click", () => {
+                showStep(Math.max(currentStep - 1, 1));
+            });
+        });
+
+        document.getElementById("confirmPassword").addEventListener("input", () => {
+            const password = document.getElementById("password");
+            const confirmation = document.getElementById("confirmPassword");
+
+            confirmation.setCustomValidity(
+                confirmation.value && confirmation.value !== password.value
+                    ? "The passwords do not match."
+                    : ""
+            );
+        });
+
+        document.getElementById("password").addEventListener("input", () => {
+            const password = document.getElementById("password");
+            const confirmation = document.getElementById("confirmPassword");
+
+            confirmation.setCustomValidity(
+                confirmation.value && confirmation.value !== password.value
+                    ? "The passwords do not match."
+                    : ""
+            );
+        });
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            message.classList.remove("success-message");
+            message.textContent = "";
+
+            if (currentStep !== 3 || !validateCurrentStep()) return;
+
+            const ownerName = document.getElementById("ownerName").value.trim();
+            const businessName = document.getElementById("businessName").value.trim();
+            const displayPreference = document.getElementById("displayPreference").value;
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (password.length < 8) {
+                message.textContent = "Your password must contain at least 8 characters.";
+                document.getElementById("password").focus();
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                message.textContent = "The passwords do not match.";
+                document.getElementById("confirmPassword").focus();
+                return;
+            }
+
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+            message.textContent = "Creating your account...";
+
+            try {
+                await window.BiasharaAuth.register({
+                    ownerName,
+                    businessName,
+                    displayPreference,
+                    email,
+                    password
+                });
+
+                const identity = {
+                    type: displayPreference,
+                    name: displayPreference === "owner" ? ownerName : businessName,
+                    ownerName,
+                    businessName
+                };
+
+                localStorage.setItem(
+                    "biasharaExpressIdentity",
+                    JSON.stringify(identity)
+                );
+
+                const previousSettings = JSON.parse(
+                    localStorage.getItem("biasharaExpressSettings") || "{}"
+                );
+
+                localStorage.setItem("biasharaExpressSettings", JSON.stringify({
+                    ...previousSettings,
+                    ownerName,
+                    businessName
+                }));
+
+                message.classList.add("success-message");
+                message.textContent = "Account created successfully. Opening your dashboard...";
+
+                window.location.replace("index.html");
+            } catch (error) {
+                message.classList.remove("success-message");
+                message.textContent = error.message || "Unable to create your account.";
+            } finally {
+                if (submitButton) submitButton.disabled = false;
+            }
+        });showStep(1);
+    })();
+    </script>
+
+<script src="js/date-rollover.js"></script>
+</body>
+</html>
+
+

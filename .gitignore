@@ -1,0 +1,44 @@
+﻿# Secrets and environment configuration
+.env
+.env.*
+!.env.example
+**/application-local.properties
+**/application-secret.properties
+
+# Node dependencies
+node_modules/
+**/node_modules/
+
+# Java and Maven build output
+**/target/
+
+# Android and Gradle build output
+.gradle/
+**/.gradle/
+**/build/
+local.properties
+*.keystore
+*.jks
+
+# Generated Android packages
+*.apk
+*.aab
+
+# Local databases and database backups
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.sql.gz
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Project backups
+Backend/backup-before-bom-fix/
+Backend/pom.xml.before-jackson-fix
+Frontend/index.html.backup

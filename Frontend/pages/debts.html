@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/account-storage.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#167D45">
+    <title>Debts & Creditors | BiasharaExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .debt-content{max-width:1450px;margin:auto;padding:24px}
+        .debt-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:24px}
+        .debt-heading h1{margin:0 0 6px}
+        .debt-muted{color:var(--text-secondary)}
+        .debt-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+        .debt-stat,.debt-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+        .debt-stat span{display:block;color:var(--text-secondary);font-size:13px;margin-bottom:8px}
+        .debt-stat strong{font-size:22px}
+        .debt-panel{margin-bottom:20px}
+        .debt-panel h2{font-size:18px;margin:0 0 18px}
+        .debt-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+        .debt-button{padding:10px 15px;border:0;border-radius:9px;font:inherit;font-weight:600;cursor:pointer}
+        .debt-primary{background:var(--primary);color:white}
+        .debt-secondary{background:var(--primary-light);color:var(--primary-dark)}
+        .debt-tabs button.active{background:var(--primary);color:white}
+        .debt-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+        .debt-field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+        .debt-field label{font-size:13px;font-weight:600}
+        .debt-field input,.debt-field select,.debt-field textarea{width:100%;box-sizing:border-box;min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text-primary);font:inherit}
+        .debt-field textarea{min-height:75px;resize:vertical}
+        .debt-notice{display:none;padding:12px 14px;border-radius:9px;margin-bottom:16px}
+        .debt-notice.success{display:block;background:var(--primary-light);color:var(--primary-dark)}
+        .debt-notice.error{display:block;background:#FDECEC;color:var(--loss)}
+        .debt-toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+        .debt-search{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;font:inherit}
+        .debt-table-wrap{overflow-x:auto}
+        .debt-table{width:100%;border-collapse:collapse;min-width:850px}
+        .debt-table th,.debt-table td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+        .debt-table th{color:var(--text-secondary)}
+        .debt-table td:last-child{white-space:nowrap}
+        .debt-action{border:0;background:transparent;color:var(--primary);font:inherit;font-weight:600;cursor:pointer;margin-right:8px}
+        .debt-delete{color:var(--loss)}
+        .debt-status{display:inline-block;padding:4px 8px;border-radius:20px;background:var(--primary-light);color:var(--primary-dark);font-size:12px}
+        .debt-outstanding{background:#FFF0D1;color:#8A5A00}
+        .debt-empty{text-align:center;padding:25px;color:var(--text-secondary)}
+        .debt-history{margin-top:20px}
+        .debt-history-item{display:flex;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
+        @media(max-width:750px){.debt-content{padding:14px}.debt-stats{grid-template-columns:1fr}.debt-grid{grid-template-columns:1fr 1fr}.debt-panel{padding:15px}}
+        @media(max-width:460px){.debt-grid{grid-template-columns:1fr}.debt-toolbar>*{width:100%}}
+    </style>
+</head>
+<body>
+<main class="debt-content">
+    <header class="debt-heading">
+        <div>
+            <h1>Debts & Creditors</h1>
+            <p class="debt-muted">Track customer credit, supplier debts and repayments.</p>
+        </div>
+        <a href="../index.html" class="debt-button debt-secondary" style="text-decoration:none">Back to Dashboard</a>
+    </header>
+
+    <div id="debtNotice" class="debt-notice" role="status" aria-live="polite"></div>
+
+    <section class="debt-stats">
+        <div class="debt-stat"><span>Customers owe the shop</span><strong id="customerDebtTotal">KSh 0.00</strong></div>
+        <div class="debt-stat"><span>Shop owes suppliers</span><strong id="supplierDebtTotal">KSh 0.00</strong></div>
+        <div class="debt-stat"><span>Total outstanding records</span><strong id="debtRecordCount">0</strong></div>
+    </section>
+
+    <section class="debt-panel">
+        <h2 id="debtFormTitle">Record a debt</h2>
+        <div class="debt-tabs">
+            <button type="button" class="debt-button debt-primary active" id="customerTab">Customer debt</button>
+            <button type="button" class="debt-button debt-secondary" id="supplierTab">Supplier creditor</button>
+        </div>
+
+        <form id="debtForm">
+            <input type="hidden" id="debtEditId">
+            <div class="debt-grid">
+                <div class="debt-field">
+                    <label for="debtParty">Customer or supplier name *</label>
+                    <input id="debtParty" maxlength="100" required placeholder="Enter full name">
+                </div>
+                <div class="debt-field">
+                    <label for="debtPhone">Phone number</label>
+                    <input id="debtPhone" type="tel" maxlength="25" placeholder="Optional">
+                </div>
+                <div class="debt-field">
+                    <label for="debtDate">Transaction date *</label>
+                    <input id="debtDate" type="date" required>
+                </div>
+                <div class="debt-field">
+                    <label for="debtAmount">Original amount (KSh) *</label>
+                    <input id="debtAmount" type="number" min="0.01" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="debt-field">
+                    <label for="debtDueDate">Due date</label>
+                    <input id="debtDueDate" type="date">
+                </div>
+                <div class="debt-field">
+                    <label for="debtDescription">Description</label>
+                    <input id="debtDescription" maxlength="200" placeholder="e.g. Vegetables supplied">
+                </div>
+            </div>
+            <button type="submit" class="debt-button debt-primary" id="debtSaveButton">Save debt</button>
+            <button type="button" class="debt-button debt-secondary" id="debtCancelButton" hidden>Cancel editing</button>
+        </form>
+    </section>
+
+    <section class="debt-panel">
+        <h2 id="debtListTitle">Customer debts</h2>
+        <div class="debt-toolbar">
+            <input id="debtSearch" class="debt-search" type="search" placeholder="Search by name, phone or description">
+            <button id="debtExportButton" type="button" class="debt-button debt-secondary">Export CSV</button>
+        </div>
+        <div class="debt-table-wrap">
+            <table class="debt-table">
+                <thead>
+                    <tr>
+                        <th>Name</th><th>Date</th><th>Original amount</th>
+                        <th>Paid</th><th>Balance</th><th>Status</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="debtRows">
+                    <tr><td colspan="7" class="debt-empty">No records yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="debt-history">
+            <h2>Recent repayments</h2>
+            <div id="repaymentHistory"><p class="debt-empty">No repayments recorded yet.</p></div>
+        </div>
+    </section>
+
+    <section class="debt-panel">
+        <h2>Record a repayment</h2>
+        <form id="repaymentForm">
+            <div class="debt-grid">
+                <div class="debt-field">
+                    <label for="repaymentRecord">Select debt record *</label>
+                    <select id="repaymentRecord" required>
+                        <option value="">Select an outstanding record</option>
+                    </select>
+                </div>
+                <div class="debt-field">
+                    <label for="repaymentAmount">Amount paid (KSh) *</label>
+                    <input id="repaymentAmount" type="number" min="0.01" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="debt-field">
+                    <label for="repaymentDate">Payment date *</label>
+                    <input id="repaymentDate" type="date" required>
+                </div>
+                <div class="debt-field">
+                    <label for="repaymentMethod">Payment method *</label>
+                    <select id="repaymentMethod" required>
+                        <option value="Cash">Cash</option>
+                        <option value="M-Pesa">M-Pesa</option>
+                        <option value="Bank">Bank</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="debt-field">
+                    <label for="repaymentNote">Reference or note</label>
+                    <input id="repaymentNote" maxlength="150" placeholder="Optional">
+                </div>
+            </div>
+            <button type="submit" class="debt-button debt-primary">Save repayment</button>
+        </form>
+    </section>
+</main>
+<script src="../js/database/sqlite-adapter.bundle.js"></script>
+<script src="../js/sync-worker.js"></script>
+<script src="../js/debts.js"></script>
+
+<script src="../js/date-rollover.js"></script>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#167D45">
+    <title>Log In | BiasharaExpress</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="login-page">
+    <main class="auth-layout">
+        <section class="auth-brand login-brand">
+            <a class="brand-mark" href="login.html" aria-label="BiasharaExpress home">BE</a>
+            <p class="eyebrow">WELCOME BACK</p>
+            <h1>Your business. Your progress. All in one place.</h1>
+            <p>Keep track of sales, stock, expenses and customer debts with BiasharaExpress.</p>
+            <div class="brand-highlight">
+                <span class="brand-highlight-icon">✓</span>
+                <span>A simpler way to manage your daily business.</span>
+            </div>
+            <div class="brand-footer">BiasharaExpress · Simple business management</div>
+        </section>
+
+        <section class="auth-panel">
+            <div class="auth-form-wrap login-form-wrap">
+                <a class="mobile-brand" href="login.html">BE <span>BiasharaExpress</span></a>
+                <p class="eyebrow">YOUR WORKSPACE</p>
+                <h2>Welcome back</h2>
+                <p class="muted">Enter your details to continue to your workspace.</p>
+
+                <form id="loginForm">
+                    <div class="field">
+                        <label for="email">Email address</label>
+                        <input id="email" name="email" type="email" autocomplete="username"
+                            required placeholder="you@example.com">
+                    </div>
+
+                    <div class="field">
+                        <div class="password-label-row">
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="password-input-wrap">
+                            <input id="password" name="password" type="password"
+                                autocomplete="current-password" required
+                                placeholder="Enter your password">
+                            <button class="password-toggle" id="togglePassword"
+                                type="button" aria-label="Show password"
+                                aria-controls="password" aria-pressed="false">Show</button>
+                        </div>
+                    </div>
+
+                    <p id="loginMessage" class="form-message" role="status" aria-live="polite"></p>
+                    <button class="primary-button" type="submit">Log in</button>
+                </form>
+
+                <p class="auth-switch">New to BiasharaExpress? <a href="register.html">Create an account</a></p>
+                <p class="security-note">Login is a preview until secure backend authentication is connected. Do not enter a real password.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+    "use strict";
+
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", () => {
+        const showPassword = passwordInput.type === "password";
+        passwordInput.type = showPassword ? "text" : "password";
+        togglePassword.textContent = showPassword ? "Hide" : "Show";
+        togglePassword.setAttribute("aria-label",
+            showPassword ? "Hide password" : "Show password");
+        togglePassword.setAttribute("aria-pressed", String(showPassword));
+    });
+
+    loginForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        loginMessage.classList.remove("success-message");
+        loginMessage.textContent = "Signing in...";
+
+        const submitButton = loginForm.querySelector('button[type="submit"]');
+        if (submitButton) submitButton.disabled = true;
+
+        try {
+            await window.BiasharaAuth.login(
+                document.getElementById("email").value.trim(),
+                document.getElementById("password").value
+            );
+
+            window.location.replace("index.html");
+        } catch (error) {
+            loginMessage.textContent = error.message || "Unable to sign in.";
+        } finally {
+            if (submitButton) submitButton.disabled = false;
+        }
+    });
+    </script>
+
+<script src="js/date-rollover.js"></script>
+</body>
+</html>
+
+

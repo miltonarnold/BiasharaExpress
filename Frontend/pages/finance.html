@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/account-storage.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#167D45">
+    <title>Finance & Profit | BiasharaExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .finance-content{max-width:1500px;margin:auto;padding:24px}
+        .finance-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:24px}
+        .finance-heading h1{margin:0 0 6px}
+        .finance-muted{color:var(--text-secondary)}
+        .finance-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+        .finance-stat,.finance-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+        .finance-stat span{display:block;color:var(--text-secondary);font-size:13px;margin-bottom:8px}
+        .finance-stat strong{font-size:21px;overflow-wrap:anywhere} .finance-stats .finance-stat:last-child:nth-child(4n + 1){grid-column:1 / -1}
+        .finance-panel{margin-bottom:20px}
+        .finance-panel h2{font-size:18px;margin:0 0 18px}
+        .finance-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+        .finance-field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+        .finance-field label{font-size:13px;font-weight:600}
+        .finance-field input,.finance-field select,.finance-field textarea{width:100%;box-sizing:border-box;min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text-primary);font:inherit}
+        .finance-field textarea{min-height:75px;resize:vertical}
+        .finance-button{padding:10px 15px;min-height:41px;border:0;border-radius:9px;font:inherit;font-weight:600;cursor:pointer}
+        .finance-primary{background:var(--primary);color:white}
+        .finance-secondary{background:var(--primary-light);color:var(--primary-dark)}
+        .finance-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+        .finance-tabs button.active{background:var(--primary);color:white}
+        .finance-notice{display:none;padding:12px 14px;border-radius:9px;margin-bottom:16px}
+        .finance-notice.success{display:block;background:var(--primary-light);color:var(--primary-dark)}
+        .finance-notice.error{display:block;background:#FDECEC;color:var(--loss)}
+        .finance-toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+        .finance-toolbar input,.finance-toolbar select{min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);font:inherit}
+        .finance-search{flex:1;min-width:180px}
+        .finance-table-wrap{overflow-x:auto}
+        .finance-table{width:100%;border-collapse:collapse;min-width:780px}
+        .finance-table th,.finance-table td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+        .finance-table th{color:var(--text-secondary)}
+        .finance-table td:last-child{white-space:nowrap}
+        .finance-action{border:0;background:transparent;color:var(--primary);font:inherit;font-weight:600;cursor:pointer;margin-right:8px}
+        .finance-delete{color:var(--loss)}
+        .finance-empty{text-align:center;padding:25px;color:var(--text-secondary)}
+        .finance-report-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+        .finance-report-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+        .finance-report-row strong{text-align:right}
+        .finance-positive{color:var(--primary)}
+        .finance-negative{color:var(--loss)}
+        .finance-note{font-size:13px;line-height:1.6;color:var(--text-secondary)}
+        @media(max-width:850px){.finance-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:550px){.finance-content{padding:14px}.finance-stats,.finance-grid,.finance-report-grid{grid-template-columns:1fr}.finance-panel,.finance-stat{padding:15px}.finance-toolbar>*{width:100%}}
+    </style>
+</head>
+<body>
+<main class="finance-content">
+    <header class="finance-heading">
+        <div>
+            <h1>Capital, Expenses & Profit</h1>
+            <p class="finance-muted">Monitor business funds, spending and financial performance.</p>
+        </div>
+        <a href="../index.html" class="finance-button finance-secondary" style="display:inline-flex;align-items:center;text-decoration:none">Back to Dashboard</a>
+    </header>
+
+    <div id="financeNotice" class="finance-notice" role="status" aria-live="polite"></div>
+
+    <section class="finance-stats">
+        <div class="finance-stat"><span>Total capital invested</span><strong id="financeCapital">KSh 0.00</strong></div>
+        <div class="finance-stat"><span>Owner withdrawals</span><strong id="financeWithdrawals">KSh 0.00</strong></div>
+        <div class="finance-stat"><span>Recorded sales revenue</span><strong id="financeRevenue">KSh 0.00</strong></div>
+        <div class="finance-stat"><span>Operating expenses</span><strong id="financeExpenses">KSh 0.00</strong></div>
+        <div class="finance-stat"><span>Estimated net profit</span><strong id="financeNetProfit">KSh 0.00</strong></div>
+    </section>
+
+    <section class="finance-panel">
+        <h2>Record financial transaction</h2>
+        <div class="finance-tabs">
+            <button type="button" id="capitalTab" class="finance-button finance-primary active">Capital / Investment</button>
+            <button type="button" id="withdrawalTab" class="finance-button finance-secondary">Owner Withdrawal</button>
+            <button type="button" id="expenseTab" class="finance-button finance-secondary">Business Expense</button>
+        </div>
+
+        <form id="financeForm">
+            <input type="hidden" id="financeEditId">
+            <div class="finance-grid">
+                <div class="finance-field">
+                    <label for="financeDescription">Description *</label>
+                    <input id="financeDescription" maxlength="150" required placeholder="e.g. Initial business capital">
+                </div>
+                <div class="finance-field">
+                    <label for="financeAmount">Amount (KSh) *</label>
+                    <input id="financeAmount" type="number" min="0.01" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="finance-field">
+                    <label for="financeDate">Transaction date *</label>
+                    <input id="financeDate" type="date" required>
+                </div>
+                <div class="finance-field">
+                    <label for="financeCategory">Category *</label>
+                    <select id="financeCategory" required></select>
+                </div>
+                <div class="finance-field">
+                    <label for="financeMethod">Payment method</label>
+                    <select id="financeMethod">
+                        <option value="Cash">Cash</option>
+                        <option value="M-Pesa">M-Pesa</option>
+                        <option value="Bank">Bank</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="finance-field">
+                    <label for="financeReference">Reference / notes</label>
+                    <input id="financeReference" maxlength="150" placeholder="Optional">
+                </div>
+            </div>
+            <button type="submit" class="finance-button finance-primary" id="financeSaveButton">Save transaction</button>
+            <button type="button" class="finance-button finance-secondary" id="financeCancelButton" hidden>Cancel editing</button>
+        </form>
+    </section>
+
+    <section class="finance-panel">
+        <h2>Financial report</h2>
+        <div class="finance-toolbar">
+            <div class="finance-field" style="margin:0">
+                <label for="reportFrom">From date</label>
+                <input id="reportFrom" type="date">
+            </div>
+            <div class="finance-field" style="margin:0">
+                <label for="reportTo">To date</label>
+                <input id="reportTo" type="date">
+            </div>
+            <button type="button" id="financeReportButton" class="finance-button finance-secondary" style="align-self:end">Apply dates</button>
+            <button type="button" id="financeResetReport" class="finance-button finance-secondary" style="align-self:end">All dates</button>
+        </div>
+        <div class="finance-report-grid">
+            <div>
+                <div class="finance-report-row"><span>Capital added</span><strong id="reportCapital">KSh 0.00</strong></div>
+                <div class="finance-report-row"><span>Sales revenue</span><strong id="reportRevenue">KSh 0.00</strong></div>
+                <div class="finance-report-row"><span>Cost of goods sold</span><strong id="reportCogs">KSh 0.00</strong></div>
+            </div>
+            <div>
+                <div class="finance-report-row"><span>Gross profit</span><strong id="reportGross">KSh 0.00</strong></div>
+                <div class="finance-report-row"><span>Operating expenses</span><strong id="reportExpenses">KSh 0.00</strong></div>
+                <div class="finance-report-row"><span>Estimated net profit</span><strong id="reportNet">KSh 0.00</strong></div>
+            </div>
+        </div>
+        <p class="finance-note">Profit figures are estimates based on available records. Accurate cost of goods sold requires product costs to be captured on each sale. Capital is not revenue, and loan proceeds are not profit.</p>
+    </section>
+
+    <section class="finance-panel">
+        <h2>Financial transaction history</h2>
+        <div class="finance-toolbar">
+            <input id="financeSearch" class="finance-search" type="search" placeholder="Search description, category or reference">
+            <select id="financeTypeFilter" aria-label="Filter transaction type">
+                <option value="all">All transactions</option>
+                <option value="capital">Capital / Investment</option>
+                <option value="withdrawal">Owner Withdrawals</option>
+                <option value="expense">Business Expenses</option>
+            </select>
+            <button id="financeExportButton" type="button" class="finance-button finance-secondary">Export CSV</button>
+        </div>
+        <div class="finance-table-wrap">
+            <table class="finance-table">
+                <thead>
+                    <tr><th>Date</th><th>Description</th><th>Category</th><th>Type</th><th>Amount</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="financeRows">
+                    <tr><td colspan="6" class="finance-empty">No transactions recorded yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script src="../js/database/sqlite-adapter.bundle.js"></script>
+<script src="../js/sync-worker.js"></script>
+<script src="../js/finance.js"></script>
+
+<script src="../js/date-rollover.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+

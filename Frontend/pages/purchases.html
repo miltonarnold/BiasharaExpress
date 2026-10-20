@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/account-storage.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#167D45">
+    <title>Purchases & Stock Receiving | BiasharaExpress</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .module-content{padding:24px;max-width:1500px;margin:auto}
+        .module-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+        .module-heading h1{margin:0 0 6px}
+        .module-subtitle{color:var(--text-secondary);margin:0}
+        .purchase-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+        .purchase-panel h2{font-size:18px;margin:0 0 18px}
+        .purchase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+        .purchase-field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;min-width:0}
+        .purchase-field label{font-size:13px;font-weight:600}
+        .purchase-field input,.purchase-field select{width:100%;min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text-primary);font:inherit}
+        .purchase-button{min-height:41px;padding:10px 15px;border:0;border-radius:9px;font:inherit;font-weight:600;cursor:pointer}
+        .purchase-button:disabled{opacity:.6;cursor:not-allowed}
+        .purchase-primary{background:var(--primary);color:white}
+        .purchase-secondary{background:var(--primary-light);color:var(--primary-dark)}
+        .purchase-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+        .purchase-table-wrap{overflow-x:auto}
+        .purchase-table{width:100%;border-collapse:collapse;min-width:700px}
+        .purchase-table th,.purchase-table td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+        .purchase-table th{color:var(--text-secondary);font-weight:600}
+        .purchase-table input,.purchase-table select{width:100%;min-width:90px;min-height:38px;padding:7px;border:1px solid var(--border);border-radius:7px;background:var(--surface);color:var(--text-primary);font:inherit}
+        .purchase-table .purchase-product{min-width:190px}
+        .purchase-remove{border:0;background:transparent;color:var(--loss);font:inherit;font-weight:600;cursor:pointer}
+        .purchase-total{text-align:right;font-size:19px;font-weight:700;margin:18px 0}
+        .purchase-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:20px}
+        .purchase-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:17px}
+        .purchase-stat span{display:block;color:var(--text-secondary);font-size:13px;margin-bottom:8px}
+        .purchase-stat strong{font-size:20px;overflow-wrap:anywhere}
+        .purchase-notice{display:none;padding:12px 14px;border-radius:9px;margin-bottom:16px;font-size:14px}
+        .purchase-notice.success{display:block;background:var(--primary-light);color:var(--primary-dark)}
+        .purchase-notice.error{display:block;background:#FDECEC;color:var(--loss)}
+        .purchase-empty{text-align:center;padding:25px;color:var(--text-secondary)}
+        .purchase-help{font-size:13px;color:var(--text-secondary);margin-top:0}
+        .purchase-outstanding{font-weight:700}
+        @media(max-width:700px){.module-content{padding:15px}.purchase-grid,.purchase-stats{grid-template-columns:1fr}.purchase-panel{padding:15px}}
+        @media(max-width:460px){.purchase-toolbar>*{width:100%}}
+    </style>
+</head>
+<body>
+<main class="module-content">
+    <header class="module-heading">
+        <div>
+            <h1>Purchases & Stock Receiving</h1>
+            <p class="module-subtitle">Record stock received, supplier payments and unpaid balances.</p>
+        </div>
+        <a href="../index.html" class="purchase-button purchase-secondary" style="display:inline-flex;align-items:center;text-decoration:none">Back to Dashboard</a>
+    </header>
+
+    <div id="purchaseNotice" class="purchase-notice" role="status" aria-live="polite"></div>
+
+    <section class="purchase-stats">
+        <div class="purchase-stat"><span>Purchase records</span><strong id="purchaseRecordCount">0</strong></div>
+        <div class="purchase-stat"><span>Total purchases</span><strong id="purchaseValueTotal">KSh 0.00</strong></div>
+        <div class="purchase-stat"><span>Outstanding on recorded purchases</span><strong id="purchaseOutstandingTotal">KSh 0.00</strong></div>
+    </section>
+
+    <section class="purchase-panel">
+        <h2>Record a stock purchase</h2>
+        <p class="purchase-help">Select products already registered in Products & Inventory. Saving a purchase increases their stock.</p>
+        <form id="purchaseForm">
+            <div class="purchase-grid">
+                <div class="purchase-field">
+                    <label for="purchaseSupplier">Supplier name *</label>
+                    <input id="purchaseSupplier" type="text" maxlength="120" placeholder="Supplier or market trader" required>
+                </div>
+                <div class="purchase-field">
+                    <label for="purchasePhone">Supplier phone</label>
+                    <input id="purchasePhone" type="tel" maxlength="30" placeholder="Optional phone number">
+                </div>
+                <div class="purchase-field">
+                    <label for="purchaseDate">Purchase date *</label>
+                    <input id="purchaseDate" type="date" required>
+                </div>
+                <div class="purchase-field">
+                    <label for="purchaseReference">Invoice / receipt number</label>
+                    <input id="purchaseReference" type="text" maxlength="100" placeholder="Optional reference">
+                </div>
+                <div class="purchase-field">
+                    <label for="purchaseDueDate">Payment due date</label>
+                    <input id="purchaseDueDate" type="date">
+                </div>
+            </div>
+
+            <div class="purchase-toolbar">
+                <h2 style="margin:0">Items received</h2>
+                <button class="purchase-button purchase-secondary" id="purchaseAddItem" type="button">+ Add product</button>
+            </div>
+
+            <div class="purchase-table-wrap">
+                <table class="purchase-table">
+                    <thead>
+                        <tr><th>Product</th><th>Quantity received</th><th>Unit cost (KSh)</th><th>Line total</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="purchaseItems">
+                        <tr><td colspan="5" class="purchase-empty">Add a product to begin.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="purchase-total">Purchase total: <span id="purchaseGrandTotal">KSh 0.00</span></div>
+
+            <div class="purchase-grid">
+                <div class="purchase-field">
+                    <label for="purchaseAmountPaid">Amount paid now (KSh) *</label>
+                    <input id="purchaseAmountPaid" type="number" min="0" step="0.01" value="0" required>
+                </div>
+                <div class="purchase-field">
+                    <label for="purchasePaymentMethod">Payment method</label>
+                    <select id="purchasePaymentMethod">
+                        <option value="Cash">Cash</option>
+                        <option value="M-Pesa">M-Pesa</option>
+                        <option value="Bank">Bank</option>
+                        <option value="Other">Other</option>
+                        <option value="Credit">Credit / unpaid</option>
+                    </select>
+                </div>
+                <div class="purchase-field">
+                    <label>Outstanding balance (KSh)</label>
+                    <input id="purchaseOutstanding" type="text" value="KSh 0.00" readonly>
+                </div>
+            </div>
+
+            <div class="purchase-field">
+                <label for="purchaseNotes">Notes</label>
+                <input id="purchaseNotes" type="text" maxlength="250" placeholder="Optional notes">
+            </div>
+
+            <button class="purchase-button purchase-primary" id="purchaseSaveButton" type="submit">Save purchase & update stock</button>
+        </form>
+    </section>
+
+    <section class="purchase-panel">
+        <h2>Purchase history</h2>
+        <div class="purchase-table-wrap">
+            <table class="purchase-table">
+                <thead>
+                    <tr><th>Date</th><th>Reference</th><th>Supplier</th><th>Total</th><th>Paid</th><th>Outstanding</th><th>Items</th></tr>
+                </thead>
+                <tbody id="purchaseHistoryRows">
+                    <tr><td colspan="7" class="purchase-empty">No purchases recorded yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="purchase-panel">
+        <h2>Supplier Statement</h2>
+        <p class="purchase-help">Review purchases, payments and outstanding balances for one supplier.</p>
+
+        <div class="purchase-grid">
+            <div class="purchase-field">
+                <label for="supplierStatementSelect">Select supplier</label>
+                <select id="supplierStatementSelect">
+                    <option value="">Choose a supplier</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="purchase-stats">
+            <div class="purchase-stat">
+                <span>Total purchases</span>
+                <strong id="supplierStatementPurchases">KSh 0.00</strong>
+            </div>
+            <div class="purchase-stat">
+                <span>Total paid</span>
+                <strong id="supplierStatementPaid">KSh 0.00</strong>
+            </div>
+            <div class="purchase-stat">
+                <span>Outstanding balance</span>
+                <strong id="supplierStatementOutstanding">KSh 0.00</strong>
+            </div>
+        </div>
+
+        <div class="purchase-table-wrap">
+            <table class="purchase-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reference</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Outstanding</th>
+                    </tr>
+                </thead>
+                <tbody id="supplierStatementRows">
+                    <tr>
+                        <td colspan="5" class="purchase-empty">Select a supplier to view the statement.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script src="../js/database/sqlite-adapter.bundle.js"></script>
+<script src="../js/sync-worker.js"></script>
+<script src="../js/purchases.js"></script>
+
+<script src="../js/date-rollover.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,2086 @@
+:root {
+    --primary: #167D45;
+    --primary-dark: #105C32;
+    --primary-light: #E8F5E9;
+    --background: #F5F8F6;
+    --surface: #FFFFFF;
+    --text-primary: #263238;
+    --text-secondary: #718078;
+    --border: #E3EAE5;
+    --profit: #16834A;
+    --loss: #D64545;
+    --warning: #B7791F;
+    --inventory: #2563EB;
+    --sidebar-width: 250px;
+    --header-height: 66px;
+    --radius: 13px;
+}
+
+/* =========================================================
+   RESET AND GLOBAL STYLES
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 85px;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button,
+a,
+select {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+/* =========================================================
+   APPLICATION LAYOUT
+========================================================= */
+
+.app-container {
+    min-height: 100vh;
+}
+
+.main-content {
+    min-width: 0;
+    min-height: 100vh;
+    margin-left: var(--sidebar-width);
+    transition: margin-left 180ms ease;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    height: 100vh;
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    transition:
+        transform 180ms ease,
+        visibility 180ms ease;
+    scrollbar-width: thin;
+    scrollbar-color: #D6E2D9 transparent;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 76px;
+    padding: 14px 17px;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand-logo {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    box-shadow: 0 4px 10px rgba(22, 125, 69, 0.15);
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.brand-text h1 {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.35px;
+    line-height: 1.4;
+}
+
+.brand-text p {
+    margin-top: 3px;
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+.main-navigation {
+    flex: 1;
+    padding: 16px 11px;
+}
+
+.navigation-heading {
+    margin: 18px 10px 8px;
+    color: #89968D;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.navigation-heading:first-child {
+    margin-top: 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 42px;
+    margin-bottom: 3px;
+    padding: 7px 10px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    color: #68766D;
+    font-size: 12px;
+    font-weight: 600;
+    transition:
+        color 150ms ease,
+        background 150ms ease,
+        border-color 150ms ease;
+}
+
+.nav-link:hover {
+    background: #F5F9F6;
+    color: var(--primary-dark);
+}
+
+.nav-link.active {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 750;
+}
+
+.nav-icon {
+    display: grid;
+    width: 29px;
+    height: 29px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 8px;
+    background: #F0F4F1;
+    color: #52655A;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    transition:
+        color 150ms ease,
+        background 150ms ease;
+}
+
+.nav-link:hover .nav-icon {
+    background: #E8F5E9;
+    color: var(--primary-dark);
+}
+
+.nav-link.active .nav-icon {
+    background: var(--primary);
+    color: #FFFFFF;
+}
+
+.sidebar-footer {
+    padding: 13px;
+    border-top: 1px solid var(--border);
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 42px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #F8FAF8;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--profit);
+    box-shadow: 0 0 0 3px rgba(22, 131, 74, 0.10);
+}
+
+.connection-status strong {
+    color: #496253;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.connection-status p,
+.app-version {
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+.app-version {
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-height: var(--header-height);
+    padding: 10px 22px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
+}
+
+.topbar-left,
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar-left {
+    min-width: 0;
+}
+
+.page-heading {
+    min-width: 0;
+}
+
+.page-heading .breadcrumb {
+    margin-bottom: 2px;
+    color: var(--text-secondary);
+    font-size: 10px;
+    font-weight: 650;
+    letter-spacing: 0.4px;
+}
+
+.page-heading h2 {
+    overflow: hidden;
+    color: var(--text-primary);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.45px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.business-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.business-selector label,
+.date-display label {
+    color: var(--text-secondary);
+    font-size: 10px;
+    font-weight: 650;
+}
+
+.business-selector select {
+    max-width: 180px;
+    min-height: 34px;
+    padding: 5px 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--text-primary);
+    font-size: 12px;
+}
+
+.topbar-actions input[type="date"] {
+    width: auto;
+    max-width: 150px;
+    min-height: 35px;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--text-primary);
+    font-size: 11px;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 4px 0 4px 11px;
+    border: 0;
+    border-left: 1px solid var(--border);
+    background: transparent;
+    text-align: left;
+}
+
+.profile-avatar {
+    display: grid;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 1px solid #D8EBDD;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-details strong {
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.profile-details small {
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+/* =========================================================
+   HAMBURGER MENU
+========================================================= */
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #FFFFFF;
+    transition: background 150ms ease;
+}
+
+.menu-toggle:hover {
+    background: var(--primary-light);
+}
+
+.menu-toggle span {
+    display: block;
+    width: 19px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text-primary);
+}
+
+/* =========================================================
+   DASHBOARD CONTENT
+========================================================= */
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 23px;
+}
+
+.welcome-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.section-eyebrow {
+    margin-bottom: 5px;
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.welcome-section h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(20px, 2vw, 25px);
+    font-weight: 800;
+    letter-spacing: -0.55px;
+}
+
+.welcome-section > div:first-child > p:last-child {
+    max-width: 550px;
+    margin-top: 4px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.date-display {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 150px;
+}
+
+.date-display input {
+    width: 100%;
+    min-height: 37px;
+    padding: 7px 9px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--text-primary);
+    font-size: 11px;
+}
+
+/* =========================================================
+   SECTION HEADINGS AND BUTTONS
+========================================================= */
+
+.summary-section,
+.quick-actions-section,
+.stock-section,
+.transactions-section {
+    min-width: 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.section-header h3 {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.25px;
+}
+
+.section-header p {
+    margin-top: 3px;
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+.button-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--primary-dark);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+        background 150ms ease,
+        border-color 150ms ease;
+}
+
+.button-secondary:hover {
+    border-color: #B9DCC3;
+    background: var(--primary-light);
+}
+
+.text-link {
+    flex-shrink: 0;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.text-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* =========================================================
+   FINANCIAL SUMMARY CARDS
+========================================================= */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.summary-card {
+    position: relative;
+    min-width: 0;
+    padding: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(25, 60, 40, 0.025);
+    transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease,
+        transform 150ms ease;
+}
+
+.summary-card:hover {
+    border-color: #D2E5D7;
+    box-shadow: 0 5px 14px rgba(25, 60, 40, 0.055);
+}
+
+.summary-card.featured-sales {
+    border-color: #CFE6D5;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F2FAF4 100%);
+}
+
+.summary-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.card-label {
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.5;
+}
+
+.metric-icon {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.sales-icon,
+.cash-icon {
+    background: #E8F5E9;
+    color: var(--primary);
+}
+
+.profit-icon {
+    background: #E6F6EE;
+    color: var(--profit);
+}
+
+.loss-icon {
+    background: #FDECEC;
+    color: var(--loss);
+}
+
+.debt-icon,
+.creditor-icon {
+    background: #FFF4DD;
+    color: var(--warning);
+}
+
+.metric-value {
+    overflow-wrap: anywhere;
+    color: var(--text-primary);
+    font-size: clamp(18px, 1.8vw, 25px);
+    font-weight: 800;
+    letter-spacing: -0.55px;
+    line-height: 1.35;
+    font-variant-numeric: tabular-nums;
+}
+
+.profit-value {
+    color: var(--profit);
+}
+
+.loss-value {
+    color: var(--loss);
+}
+
+.debt-value {
+    color: var(--warning);
+}
+
+.metric-description {
+    margin-top: 5px;
+    color: var(--text-secondary);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.action-card {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+    min-height: 76px;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #FFFFFF;
+    transition:
+        border-color 150ms ease,
+        background 150ms ease,
+        box-shadow 150ms ease,
+        transform 150ms ease;
+}
+
+.action-card:hover {
+    transform: translateY(-1px);
+    border-color: #B7D9C0;
+    background: #FAFDFA;
+    box-shadow: 0 4px 12px rgba(25, 60, 40, 0.04);
+}
+
+.action-symbol {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 10px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.action-card > span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.action-card strong {
+    color: var(--text-primary);
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.45;
+}
+
+.action-card small {
+    color: var(--text-secondary);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+/* =========================================================
+   TABLE CONTAINERS
+========================================================= */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 7px rgba(25, 60, 40, 0.02);
+    scrollbar-width: thin;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+}
+
+.data-table thead {
+    background: #F5F8F6;
+}
+
+.data-table th {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: #718078;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.35px;
+    white-space: nowrap;
+}
+
+.data-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #EDF1EE;
+    color: var(--text-primary);
+    font-size: 11px;
+    vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background: #FAFCFA;
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+    padding-left: 16px;
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+    padding-right: 16px;
+}
+
+.empty-state {
+    padding: 24px 15px !important;
+    color: var(--text-secondary) !important;
+    text-align: center;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   TRANSACTION STATUS AND STOCK STATUS
+========================================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 23px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: #E8F5E9;
+    color: var(--primary-dark);
+    font-size: 10px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.status-badge.warning {
+    background: #FFF4DD;
+    color: #946414;
+}
+
+.status-badge.danger {
+    background: #FDECEC;
+    color: #B83232;
+}
+
+.status-badge.neutral {
+    background: #EEF1EF;
+    color: #59665D;
+}
+
+/* =========================================================
+   OPTIONAL FINANCIAL INFORMATION PANEL
+========================================================= */
+
+.information-panel {
+    padding: 16px;
+    border: 1px solid #D0E8D6;
+    border-left: 3px solid var(--primary);
+    border-radius: 10px;
+    background: #F0F9F2;
+}
+
+.information-panel h3 {
+    margin-bottom: 5px;
+    color: var(--primary-dark);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.information-panel p {
+    color: #42634B;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.app-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 15px 23px;
+    border-top: 1px solid var(--border);
+    background: #FFFFFF;
+}
+
+.app-footer p {
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+/* =========================================================
+   TABLET LAYOUT
+========================================================= */
+
+@media (max-width: 1100px) {
+    :root {
+        --sidebar-width: 225px;
+    }
+
+    .dashboard-content {
+        padding: 20px;
+    }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .action-card {
+        min-height: 72px;
+    }
+}
+
+/* =========================================================
+   MOBILE NAVIGATION AND LAYOUT
+========================================================= */
+
+@media (max-width: 760px) {
+    :root {
+        --header-height: 60px;
+    }
+
+    .sidebar {
+        width: min(290px, 86vw);
+        box-shadow: 8px 0 28px rgba(0, 0, 0, 0.12);
+        transform: translateX(-105%);
+        visibility: hidden;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .topbar {
+        gap: 8px;
+        min-height: var(--header-height);
+        padding: 8px 12px;
+    }
+
+    .topbar-left {
+        gap: 9px;
+        min-width: 0;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .page-heading .breadcrumb {
+        font-size: 9px;
+    }
+
+    .page-heading h2 {
+        font-size: 16px;
+    }
+
+    .topbar-actions {
+        gap: 7px;
+    }
+
+    .topbar-actions input[type="date"] {
+        max-width: 125px;
+        min-height: 33px;
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .business-selector,
+    .profile-details {
+        display: none;
+    }
+
+    .profile-button {
+        padding-left: 7px;
+    }
+
+    .profile-avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .dashboard-content {
+        gap: 21px;
+        padding: 16px 12px 22px;
+    }
+
+    .welcome-section {
+        align-items: center;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .welcome-section h2 {
+        font-size: 19px;
+    }
+
+    .welcome-section > div:first-child > p:last-child {
+        font-size: 10px;
+    }
+
+    .date-display {
+        min-width: 0;
+        max-width: 145px;
+    }
+
+    .date-display label {
+        font-size: 9px;
+    }
+
+    .date-display input {
+        min-height: 34px;
+        padding: 6px;
+        font-size: 10px;
+    }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .summary-card {
+        padding: 13px 11px;
+        border-radius: 11px;
+    }
+
+    .summary-card-top {
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+
+    .card-label {
+        font-size: 10px;
+        line-height: 1.45;
+    }
+
+    .metric-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        font-size: 10px;
+    }
+
+    .metric-value {
+        font-size: clamp(15px, 4.2vw, 21px);
+        letter-spacing: -0.4px;
+    }
+
+    .metric-description {
+        font-size: 9px;
+    }
+
+    .section-header {
+        margin-bottom: 10px;
+    }
+
+    .section-header h3 {
+        font-size: 14px;
+    }
+
+    .section-header p {
+        font-size: 10px;
+    }
+
+    .button-secondary {
+        min-height: 32px;
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+
+    .text-link {
+        font-size: 10px;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .action-card {
+        align-items: center;
+        flex-direction: row;
+        gap: 9px;
+        min-height: 68px;
+        padding: 10px;
+    }
+
+    .action-symbol {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        font-size: 16px;
+    }
+
+    .action-card strong {
+        font-size: 10px;
+    }
+
+    .action-card small {
+        font-size: 9px;
+    }
+
+    .table-container {
+        border-radius: 10px;
+    }
+
+    .data-table {
+        min-width: 480px;
+    }
+
+    .data-table th {
+        padding: 10px 11px;
+        font-size: 9px;
+    }
+
+    .data-table td {
+        padding: 11px;
+        font-size: 10px;
+    }
+
+    .empty-state {
+        padding: 20px 12px !important;
+    }
+
+    .information-panel {
+        padding: 13px;
+    }
+
+    .app-footer {
+        padding: 13px 12px;
+    }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+    .topbar {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+    .topbar-left {
+        gap: 6px;
+    }
+
+    .menu-toggle {
+        width: 36px;
+        height: 36px;
+    }
+
+    .page-heading h2 {
+        font-size: 14px;
+    }
+
+    .topbar-actions {
+        gap: 5px;
+    }
+
+    .topbar-actions input[type="date"] {
+        max-width: 110px;
+        font-size: 9px;
+    }
+
+    .dashboard-content {
+        padding-right: 9px;
+        padding-left: 9px;
+    }
+
+    .welcome-section h2 {
+        font-size: 17px;
+    }
+
+    .summary-card {
+        padding: 11px 9px;
+    }
+
+    .card-label {
+        font-size: 9px;
+    }
+
+    .metric-value {
+        font-size: 15px;
+    }
+
+    .section-header h3 {
+        font-size: 13px;
+    }
+
+    .action-card {
+        gap: 7px;
+        padding: 9px;
+    }
+
+    .action-symbol {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .action-card strong {
+        font-size: 9px;
+    }
+
+    .app-footer {
+        padding-right: 9px;
+        padding-left: 9px;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY AND REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+
+/* =========================================================
+   TINDAPOS-INSPIRED DASHBOARD REDESIGN
+   Works with the updated BiasharaExpress index.html
+========================================================= */
+
+.brand-mark-mobile {
+    display: none;
+    align-items: center;
+    gap: 9px;
+}
+
+.brand-mark-mobile h1 {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.brand-mark-mobile p {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 1px;
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+.online-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22A568;
+}
+
+/* Main green sales panel */
+
+.sales-overview {
+    position: relative;
+    overflow: hidden;
+    padding: 22px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #07875E 0%, #08734F 100%);
+    color: #FFFFFF;
+    box-shadow: 0 7px 20px rgba(7, 135, 94, 0.13);
+}
+
+.sales-overview::after {
+    position: absolute;
+    top: -65px;
+    right: -45px;
+    width: 190px;
+    height: 190px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+
+.sales-overview-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.sales-overview-label {
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.8px;
+}
+
+.sales-date input {
+    max-width: 135px;
+    min-height: 30px;
+    padding: 4px 7px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+    font-size: 10px;
+}
+
+.sales-date input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
+}
+
+.sales-total {
+    position: relative;
+    z-index: 1;
+    margin: 12px 0 22px;
+    overflow-wrap: anywhere;
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 800;
+    letter-spacing: -1.1px;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+
+.sales-metrics {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 17px;
+}
+
+.sales-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    min-width: 0;
+    padding: 0 12px;
+    border-right: 1px solid rgba(255, 255, 255, 0.17);
+}
+
+.sales-metric:first-child {
+    padding-left: 0;
+}
+
+.sales-metric:last-child {
+    padding-right: 0;
+    border-right: 0;
+}
+
+.metric-symbol {
+    display: grid;
+    width: 27px;
+    height: 27px;
+    place-items: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.metric-name {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.sales-metric strong {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    color: #FFFFFF;
+    font-size: clamp(12px, 1.5vw, 16px);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Compact quick actions */
+
+.quick-actions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.action-card {
+    position: relative;
+    min-height: 72px;
+    padding: 12px;
+    border-color: #E8EDE9;
+    border-radius: 12px;
+}
+
+.action-symbol {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #E9F6EF;
+    color: #087A51;
+}
+
+.action-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.action-copy strong {
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.action-copy small {
+    color: var(--text-secondary);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.new-sale-card {
+    overflow: hidden;
+    border-color: #087A51;
+    background: #087A51;
+    color: #FFFFFF;
+}
+
+.new-sale-card:hover {
+    border-color: #065D3E;
+    background: #065D3E;
+}
+
+.new-sale-card .action-symbol {
+    background: rgba(255, 255, 255, 0.16);
+    color: #FFFFFF;
+}
+
+.new-sale-card .action-copy strong,
+.new-sale-card .action-copy small {
+    color: #FFFFFF;
+}
+
+.sale-decoration {
+    position: absolute;
+    right: 10px;
+    bottom: -10px;
+    color: rgba(255, 255, 255, 0.09);
+    font-size: 53px;
+    font-weight: 800;
+    pointer-events: none;
+}
+
+/* Transaction summary shortcut */
+
+.transaction-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #FFFFFF;
+    transition: border-color 150ms ease, background 150ms ease;
+}
+
+.transaction-summary:hover {
+    border-color: #B9DCC3;
+    background: #FAFDFA;
+}
+
+.transaction-icon {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 11px;
+    background: #E9F6EF;
+    color: #087A51;
+    font-size: 18px;
+}
+
+.transaction-copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.transaction-copy strong {
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.transaction-copy small {
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+.transaction-arrow {
+    color: #8A9990;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.additional-balances {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.balance-card {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #FFFFFF;
+}
+
+.balance-card span {
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+.balance-card strong {
+    color: var(--warning);
+    font-size: 19px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+/* Mobile bottom navigation */
+
+.bottom-navigation {
+    display: none;
+}
+
+/* Tablet adjustments */
+
+@media (max-width: 1100px) {
+    .sales-overview {
+        padding: 20px;
+    }
+
+    .sales-metric {
+        padding-right: 9px;
+        padding-left: 9px;
+    }
+}
+
+/* Mobile dashboard */
+
+@media (max-width: 760px) {
+    .topbar {
+        justify-content: space-between;
+    }
+
+    .brand-mark-mobile {
+        display: flex;
+    }
+
+    .page-heading {
+        display: none;
+    }
+
+    .topbar-actions input[type="date"] {
+        display: none;
+    }
+
+    .profile-button {
+        border-left: 0;
+        padding-left: 0;
+    }
+
+    .dashboard-content {
+        gap: 19px;
+        padding: 14px 12px 90px;
+    }
+
+    .welcome-section {
+        gap: 8px;
+    }
+
+    .welcome-section h2 {
+        font-size: 17px;
+    }
+
+    .welcome-section > div:first-child > p:last-child {
+        margin-top: 2px;
+        font-size: 10px;
+    }
+
+    .sales-overview {
+        padding: 17px 15px;
+        border-radius: 15px;
+    }
+
+    .sales-overview-label {
+        font-size: 10px;
+    }
+
+    .sales-total {
+        margin: 12px 0 18px;
+        font-size: clamp(28px, 8vw, 35px);
+    }
+
+    .sales-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: 15px;
+        padding-top: 14px;
+    }
+
+    .sales-metric {
+        gap: 4px;
+        padding: 0 10px;
+        border-right: 0;
+    }
+
+    .sales-metric:nth-child(odd) {
+        padding-left: 0;
+        border-right: 1px solid rgba(255, 255, 255, 0.17);
+    }
+
+    .sales-metric:nth-child(even) {
+        padding-right: 0;
+        padding-left: 13px;
+    }
+
+    .metric-symbol {
+        width: 25px;
+        height: 25px;
+    }
+
+    .metric-name {
+        font-size: 10px;
+    }
+
+    .sales-metric strong {
+        font-size: clamp(12px, 3.6vw, 16px);
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .action-card {
+        min-height: 69px;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .action-symbol {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+    }
+
+    .action-copy strong {
+        font-size: 10px;
+    }
+
+    .action-copy small {
+        font-size: 9px;
+    }
+
+    .sale-decoration {
+        right: 5px;
+        font-size: 42px;
+    }
+
+    .transaction-summary {
+        padding: 12px;
+    }
+
+    .transaction-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .additional-balances {
+        grid-template-columns: 1fr;
+    }
+
+    .balance-card {
+        padding: 13px;
+    }
+
+    .bottom-navigation {
+        position: fixed;
+        inset: auto 0 0;
+        z-index: 80;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        min-height: 62px;
+        padding: 6px 5px max(6px, env(safe-area-inset-bottom));
+        border-top: 1px solid #E5ECE7;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 -4px 15px rgba(20, 50, 30, 0.045);
+        backdrop-filter: blur(12px);
+    }
+
+    .bottom-nav-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        min-width: 0;
+        border-radius: 9px;
+        color: #748078;
+    }
+
+    .bottom-nav-link > span {
+        font-size: 19px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .bottom-nav-link small {
+        font-size: 9px;
+        font-weight: 650;
+    }
+
+    .bottom-nav-link.active {
+        color: #087A51;
+    }
+
+    .bottom-nav-link.active > span {
+        color: #087A51;
+    }
+
+    .app-footer {
+        margin-bottom: 62px;
+    }
+}
+
+/* Very small screens */
+
+@media (max-width: 360px) {
+    .brand-mark-mobile {
+        gap: 6px;
+    }
+
+    .brand-mark-mobile .brand-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        font-size: 12px;
+    }
+
+    .brand-mark-mobile h1 {
+        font-size: 12px;
+    }
+
+    .sales-overview {
+        padding: 14px 12px;
+    }
+
+    .sales-total {
+        font-size: 27px;
+    }
+
+    .sales-metric strong {
+        font-size: 12px;
+    }
+
+    .action-card {
+        gap: 7px;
+        padding: 8px;
+    }
+
+    .action-symbol {
+        width: 29px;
+        height: 29px;
+    }
+}
+
+
+/* =========================================================
+   QUICK ACTION BUTTONS — CONSISTENT ALIGNMENT
+========================================================= */
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+}
+
+.action-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    min-width: 0;
+    min-height: 78px;
+    padding: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #FFFFFF;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.action-card:hover {
+    transform: translateY(-1px);
+    border-color: #B9DCC3;
+    box-shadow: 0 3px 10px rgba(20, 70, 40, 0.06);
+}
+
+/* Keep all action icons the same size and position */
+
+.action-card .action-symbol {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    flex: 0 0 40px;
+    place-items: center;
+    border-radius: 10px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Keep all action text aligned consistently */
+
+.action-card .action-copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.action-card .action-copy strong {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.35;
+}
+
+.action-card .action-copy small {
+    margin: 0;
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+/* Highlight New Sale without changing its layout */
+
+.action-card.new-sale-card {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #FFFFFF;
+}
+
+.action-card.new-sale-card:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.action-card.new-sale-card .action-symbol {
+    background: rgba(255, 255, 255, 0.16);
+    color: #FFFFFF;
+}
+
+.action-card.new-sale-card .action-copy strong,
+.action-card.new-sale-card .action-copy small {
+    color: #FFFFFF;
+}
+
+/* Decorative symbol must not affect the button's alignment */
+
+.action-card .sale-decoration {
+    position: absolute;
+    right: 8px;
+    bottom: -12px;
+    display: block;
+    color: rgba(255, 255, 255, 0.10);
+    font-size: 48px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+/* Mobile sizing */
+
+@media (max-width: 760px) {
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .action-card {
+        min-height: 72px;
+        gap: 9px;
+        padding: 10px;
+    }
+
+    .action-card .action-symbol {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        flex-basis: 34px;
+        border-radius: 9px;
+        font-size: 16px;
+    }
+
+    .action-card .action-copy strong {
+        font-size: 10px;
+    }
+
+    .action-card .action-copy small {
+        font-size: 9px;
+    }
+
+    .action-card .sale-decoration {
+        right: 4px;
+        bottom: -8px;
+        font-size: 38px;
+    }
+}
+
+/* PROFESSIONAL OFFLINE SVG ICONS */
+.nav-icon svg,
+.action-symbol svg,
+.transaction-icon svg,
+.bottom-nav-link > span svg,
+.sale-decoration svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+.nav-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.action-symbol svg {
+    width: 21px;
+    height: 21px;
+}
+
+.transaction-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.bottom-nav-link > span svg {
+    width: 22px;
+    height: 22px;
+}
+
+.sale-decoration svg {
+    width: 62px;
+    height: 62px;
+    stroke-width: 1.2;
+}
+
+.nav-icon,
+.action-symbol,
+.transaction-icon {
+    line-height: 1;
+}
+
+.bottom-nav-link > span {
+    display: grid;
+    place-items: center;
+}
+
+/* Settings screen */
+.settings-content {
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.settings-content[hidden] {
+    display: none !important;
+}
+.settings-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 14px;
+    padding: 22px;
+    margin: 0 0 20px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+.settings-card h3 {
+    margin: 0 0 18px;
+}
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+.settings-content label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+.settings-content input,
+.settings-content select {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #172033;
+    font: inherit;
+    box-sizing: border-box;
+}
+.settings-help {
+    color: #64748b;
+    font-size: 13px;
+}
+.settings-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 20px 0 30px;
+}
+.settings-actions button {
+    min-height: 44px;
+    padding: 10px 20px;
+    border: 0;
+    border-radius: 8px;
+    background: #07875E;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+#settingsSaveMessage {
+    color: #087443;
+    font-size: 14px;
+}
+@media (max-width: 650px) {
+    .settings-content { padding: 16px; }
+    .settings-grid { grid-template-columns: 1fr; }
+    .settings-card { padding: 16px; }
+}
