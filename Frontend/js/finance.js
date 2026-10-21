@@ -149,6 +149,23 @@ function renderFinanceSummary() {
     setFinanceText('financeExpenses', financeMoney(totals.expenses));
     setFinanceText('financeNetProfit', financeMoney(totals.net));
 
+        // Update the profit card according to the calculated net result.
+        const profitValue = Number(totals.net);
+        const profitElement = document.getElementById('financeNetProfit');
+        const profitCard = profitElement ? profitElement.closest('.finance-stat') : null;
+
+        if (profitCard && Number.isFinite(profitValue)) {
+            profitCard.classList.remove('profit-positive', 'profit-negative', 'profit-neutral');
+
+            if (profitValue > 0) {
+                profitCard.classList.add('profit-positive');
+            } else if (profitValue < 0) {
+                profitCard.classList.add('profit-negative');
+            } else {
+                profitCard.classList.add('profit-neutral');
+            }
+        }
+
     renderFinanceReport();
 }
 
@@ -609,6 +626,7 @@ document.addEventListener('click', function (event) {
     if (type) setFinanceTab(type);
 });
 window.renderFinance = renderFinanceAll;
+
 
 
 

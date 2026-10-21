@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <script src="../js/account-storage.js"></script>
@@ -55,6 +55,114 @@
         @media(max-width:550px){.finance-content{padding:14px}.finance-stats,.finance-grid,.finance-report-grid{grid-template-columns:1fr}.finance-panel,.finance-stat{padding:15px}.finance-toolbar>*{width:100%}}
     </style>
     <link rel="stylesheet" href="../css/module-pages.css">
+<style>
+
+/* Animated Estimated Net Profit highlight */
+.finance-stats .finance-stat:has(#financeNetProfit) {
+    background: linear-gradient(135deg, #eafff0, #c8f7d6) !important;
+    border: 1px solid #4ade80 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 0 0 1px rgba(34,197,94,.12),
+                0 6px 22px rgba(22,163,74,.20) !important;
+    animation: financeProfitPulse 2s ease-in-out infinite !important;
+}
+
+.finance-stats #financeNetProfit {
+    color: #07833d !important;
+    font-weight: 800 !important;
+    text-shadow: 0 0 12px rgba(34,197,94,.35) !important;
+    animation: financeProfitGlow 2s ease-in-out infinite !important;
+}
+
+@keyframes financeProfitPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 1px rgba(34,197,94,.12),
+                    0 6px 18px rgba(22,163,74,.15);
+    }
+    50% {
+        box-shadow: 0 0 0 2px rgba(34,197,94,.25),
+                    0 8px 28px rgba(22,163,74,.32);
+    }
+}
+
+@keyframes financeProfitGlow {
+    0%, 100% { text-shadow: 0 0 5px rgba(34,197,94,.18); }
+    50% { text-shadow: 0 0 16px rgba(34,197,94,.55); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .finance-stats .finance-stat:has(#financeNetProfit),
+    .finance-stats #financeNetProfit {
+        animation: none !important;
+    }
+}
+</style>
+<style>
+/* Profit and loss card states */
+.finance-stats .finance-stat.profit-positive {
+    background: linear-gradient(135deg, #effff4, #d1fae0) !important;
+    border: 1px solid #4ade80 !important;
+    animation: financeProfitPulse 2s ease-in-out infinite;
+}
+
+.finance-stats .finance-stat.profit-positive #financeNetProfit {
+    color: #07833d !important;
+    animation: financeProfitGlow 2s ease-in-out infinite;
+}
+
+.finance-stats .finance-stat.profit-negative {
+    background: linear-gradient(135deg, #fff1f1, #ffdada) !important;
+    border: 1px solid #f87171 !important;
+    animation: financeLossPulse 2s ease-in-out infinite;
+}
+
+.finance-stats .finance-stat.profit-negative #financeNetProfit {
+    color: #c62828 !important;
+    text-shadow: 0 0 12px rgba(220, 38, 38, .35);
+    animation: financeLossGlow 2s ease-in-out infinite;
+}
+
+.finance-stats .finance-stat.profit-neutral {
+    background: #f7f9f8 !important;
+    border: 1px solid #d9e2dc !important;
+    animation: none !important;
+}
+
+.finance-stats .finance-stat.profit-neutral #financeNetProfit {
+    color: #52645a !important;
+    text-shadow: none !important;
+    animation: none !important;
+}
+
+@keyframes financeProfitPulse {
+    0%, 100% { box-shadow: 0 5px 18px rgba(22, 163, 74, .12); }
+    50% { box-shadow: 0 8px 26px rgba(22, 163, 74, .30); }
+}
+
+@keyframes financeProfitGlow {
+    0%, 100% { text-shadow: 0 0 5px rgba(34, 197, 94, .18); }
+    50% { text-shadow: 0 0 16px rgba(34, 197, 94, .55); }
+}
+
+@keyframes financeLossPulse {
+    0%, 100% { box-shadow: 0 5px 18px rgba(220, 38, 38, .12); }
+    50% { box-shadow: 0 8px 26px rgba(220, 38, 38, .30); }
+}
+
+@keyframes financeLossGlow {
+    0%, 100% { text-shadow: 0 0 5px rgba(220, 38, 38, .18); }
+    50% { text-shadow: 0 0 16px rgba(220, 38, 38, .50); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .finance-stats .finance-stat.profit-positive,
+    .finance-stats .finance-stat.profit-negative,
+    .finance-stats .finance-stat.profit-positive #financeNetProfit,
+    .finance-stats .finance-stat.profit-negative #financeNetProfit {
+        animation: none !important;
+    }
+}
+</style>
 </head>
 <body>
 <main class="finance-content">
@@ -220,3 +328,5 @@
 <script src="../js/date-rollover.js"></script>
 </body>
 </html>
+
+
