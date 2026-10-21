@@ -1570,3 +1570,32 @@ body.register-page input:-webkit-autofill {
     -webkit-text-fill-color: #173b2d !important;
     caret-color: #07875e !important;
 }
+
+/* Registration Back button visibility fix */
+.register-page a,
+.register-page button,
+.register-container a,
+.register-container button,
+a.back-button,
+button.back-button,
+.back-button,
+.back-link,
+.back-btn {
+    color: #ffffff !important;
+    background-color: #176b45 !important;
+    border: 1px solid #2a9d68 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-decoration: none !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+}
+
+a.back-button:hover,
+.back-button:hover,
+.back-link:hover,
+.back-btn:hover {
+    background-color: #0e5134 !important;
+    color: #ffffff !important;
+}
+
