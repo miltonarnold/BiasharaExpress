@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     "use strict";
 
     const SESSION_KEY = "biasharaExpressAuthSession";
@@ -14,10 +14,10 @@
         const platform = window.Capacitor?.getPlatform?.();
 
         if (platform === "android") {
-            return "http://127.0.0.1:8080";
+            return "https://biasharaexpress-backend.onrender.com";
         }
 
-        return "http://127.0.0.1:8080";
+        return "https://biasharaexpress-backend.onrender.com";
     }
 
     function getSession() {
