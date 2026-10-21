@@ -1,4 +1,4 @@
-package com.biasharaexpress.backend.config;
+﻿package com.biasharaexpress.backend.config;
 
 import com.biasharaexpress.backend.security.SessionAuthenticationFilter;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig {
 
-    @Value("${app.cors.allowed-origins:http://localhost:5500,http://127.0.0.1:5500,http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://127.0.0.1:5173,https://localhost,capacitor://localhost}")
+    @Value("${app.cors.allowed-origins:http://localhost:5500,http://127.0.0.1:5500,http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://127.0.0.1:5173,https://localhost,capacitor://localhost,https://biasharaexpress-frontend.onrender.com}")
     private String allowedOrigins;
 
     @Bean
@@ -84,3 +84,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+

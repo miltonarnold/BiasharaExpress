@@ -1,4 +1,4 @@
-package com.biasharaexpress.backend.config;
+﻿package com.biasharaexpress.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,10 +14,12 @@ public class WebConfig implements WebMvcConfigurer {
                 "http://localhost:*",
                 "http://127.0.0.1:*",
                 "https://localhost",
-                "capacitor://localhost"
+                "capacitor://localhost",
+                "https://biasharaexpress-frontend.onrender.com"
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .maxAge(3600);
     }
 }
+
