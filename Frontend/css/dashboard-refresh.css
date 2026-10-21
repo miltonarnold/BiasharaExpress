@@ -1045,3 +1045,443 @@ body:not(.settings-page) #sidebar {
         letter-spacing: 0.8px !important;
     }
 }
+
+/* ===== BiasharaExpress: final mobile dashboard layout ===== */
+@media screen and (max-width: 700px) {
+    html,
+    body {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    body {
+        box-sizing: border-box !important;
+    }
+
+    .main-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .topbar {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        padding: 12px 14px !important;
+        gap: 8px !important;
+    }
+
+    .topbar-left,
+    .topbar-actions,
+    .page-heading,
+    .profile-details {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .page-heading h2 {
+        font-size: 20px !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .topbar-actions {
+        gap: 6px !important;
+    }
+
+    .dashboard-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 14px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .welcome-section {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        gap: 12px !important;
+    }
+
+    .welcome-section h2,
+    .welcome-section p {
+        max-width: 100% !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .sales-overview {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        padding: 16px !important;
+    }
+
+    .sales-total {
+        font-size: clamp(24px, 7vw, 34px) !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .sales-metrics {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        gap: 10px !important;
+    }
+
+    .sales-metric {
+        min-width: 0 !important;
+        width: 100% !important;
+        padding: 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    .metric-name,
+    .sales-metric strong {
+        min-width: 0 !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .sales-metric strong {
+        font-size: clamp(13px, 3.6vw, 17px) !important;
+    }
+
+    .quick-actions-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        gap: 10px !important;
+    }
+
+    .action-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        padding: 12px !important;
+        gap: 9px !important;
+    }
+
+    .action-copy {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .action-copy strong,
+    .action-copy small {
+        overflow-wrap: anywhere !important;
+        white-space: normal !important;
+    }
+
+    .transaction-summary,
+    .additional-balances,
+    .balance-card,
+    .stock-section,
+    .table-container {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .data-table {
+        min-width: 520px !important;
+    }
+
+    .bottom-navigation {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .dashboard-content {
+        padding: 10px !important;
+    }
+
+    .topbar {
+        padding: 10px !important;
+    }
+
+    .sales-overview {
+        padding: 12px !important;
+    }
+
+    .sales-metrics,
+    .quick-actions-grid {
+        gap: 8px !important;
+    }
+
+    .sales-metric,
+    .action-card {
+        padding: 9px !important;
+    }
+
+    .action-card {
+        grid-template-columns: 30px minmax(0, 1fr) !important;
+        gap: 7px !important;
+    }
+
+    .action-symbol {
+        width: 30px !important;
+        height: 30px !important;
+        flex-basis: 30px !important;
+    }
+
+    .action-copy strong {
+        font-size: 12px !important;
+    }
+
+    .action-copy small {
+        font-size: 10px !important;
+    }
+}
+
+
+/* ===== BiasharaExpress: polished upper welcome panel ===== */
+#dashboard > .dashboard-content > .welcome-section {
+    position: relative !important;
+    isolation: isolate;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 28px 30px !important;
+    border: 1px solid rgba(255, 255, 255, 0.24) !important;
+    border-radius: 22px !important;
+    background:
+        radial-gradient(ellipse at 92% 5%, rgba(177, 255, 218, 0.24), transparent 36%),
+        linear-gradient(118deg, #056747 0%, #07875E 48%, #10A875 100%) !important;
+    box-shadow:
+        0 12px 30px rgba(5, 103, 71, 0.17),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+    color: #ffffff !important;
+}
+
+#dashboard > .dashboard-content > .welcome-section > div {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+}
+
+#dashboard > .dashboard-content > .welcome-section h2,
+#dashboard > .dashboard-content > .welcome-section #welcomeHeading {
+    margin: 0 0 8px !important;
+    color: #ffffff !important;
+    font-size: clamp(24px, 3vw, 34px) !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.6px;
+    text-shadow: 0 2px 12px rgba(0, 45, 30, 0.18);
+}
+
+#dashboard > .dashboard-content > .welcome-section p,
+#dashboard > .dashboard-content > .welcome-section #welcomeSubtitle {
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+}
+
+#dashboard > .dashboard-content > .welcome-section .button-secondary {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    min-height: 42px;
+    padding: 10px 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.38) !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(0, 45, 30, 0.1);
+    backdrop-filter: blur(8px);
+    transition: background 180ms ease, transform 180ms ease;
+}
+
+#dashboard > .dashboard-content > .welcome-section .button-secondary:hover {
+    background: rgba(255, 255, 255, 0.24) !important;
+    transform: translateY(-1px);
+}
+
+#dashboard > .dashboard-content > .welcome-section .button-secondary svg {
+    stroke: currentColor !important;
+}
+
+@media (max-width: 600px) {
+    #dashboard > .dashboard-content > .welcome-section {
+        padding: 22px 18px !important;
+        border-radius: 17px !important;
+        gap: 14px !important;
+    }
+
+    #dashboard > .dashboard-content > .welcome-section h2,
+    #dashboard > .dashboard-content > .welcome-section #welcomeHeading {
+        font-size: 25px !important;
+    }
+
+    #dashboard > .dashboard-content > .welcome-section p,
+    #dashboard > .dashboard-content > .welcome-section #welcomeSubtitle {
+        font-size: 13px !important;
+    }
+}
+/* ===== End polished upper welcome panel ===== */
+
+/* ===== Businesswoman background behind dashboard cards ===== */
+#dashboard > .dashboard-content {
+    position: relative;
+    isolation: isolate;
+    background-color: #f4faf6;
+}
+
+#dashboard > .dashboard-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 20px;
+    background-image:
+        linear-gradient(
+            rgba(245, 251, 247, 0.80),
+            rgba(245, 251, 247, 0.88)
+        ),
+        url("https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1800&q=85");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Keep dashboard cards above the background image */
+#dashboard > .dashboard-content > section,
+#dashboard > .dashboard-content > .welcome-section {
+    position: relative;
+}
+
+/* Slightly reveal the background in spaces between dashboard cards */
+#dashboard > .dashboard-content > .sales-overview,
+#dashboard > .dashboard-content > .dashboard-grid,
+#dashboard > .dashboard-content > .dashboard-section {
+    background-color: rgba(255, 255, 255, 0.91);
+}
+
+@media (max-width: 600px) {
+    #dashboard > .dashboard-content::before {
+        background-position: 55% center;
+        background-image:
+            linear-gradient(
+                rgba(245, 251, 247, 0.85),
+                rgba(245, 251, 247, 0.91)
+            ),
+            url("https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80");
+    }
+}
+/* ===== End businesswoman background ===== */
+
+/* ===== BiasharaExpress: Kenyan mama mboga background ===== */
+#dashboard > .dashboard-content {
+    position: relative;
+    isolation: isolate;
+    background-color: #f2f8f1;
+}
+
+#dashboard > .dashboard-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 20px;
+    background-image:
+        linear-gradient(
+            rgba(246, 251, 246, 0.70),
+            rgba(246, 251, 246, 0.82)
+        ),
+        url("https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1800&q=85");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Preserve readability and existing card layout */
+#dashboard > .dashboard-content > section {
+    position: relative;
+}
+
+#dashboard > .dashboard-content .sales-overview,
+#dashboard > .dashboard-content .dashboard-grid,
+#dashboard > .dashboard-content .dashboard-section {
+    background-color: rgba(255, 255, 255, 0.88);
+}
+
+@media (max-width: 600px) {
+    #dashboard > .dashboard-content::before {
+        background-position: center;
+        background-image:
+            linear-gradient(
+                rgba(246, 251, 246, 0.76),
+                rgba(246, 251, 246, 0.86)
+            ),
+            url("https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1000&q=80");
+    }
+}
+/* ===== End mama mboga background ===== */
+
+/* Mama mboga background behind BiasharaExpress dashboard cards */
+#dashboard > .dashboard-content {
+    position: relative;
+    isolation: isolate;
+    background: #f2f8f1;
+}
+
+#dashboard > .dashboard-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 20px;
+    background-image:
+        linear-gradient(
+            rgba(246, 250, 245, 0.58),
+            rgba(246, 250, 245, 0.72)
+        ),
+        url("https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1800&q=85");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#dashboard > .dashboard-content .sales-overview,
+#dashboard > .dashboard-content .dashboard-grid,
+#dashboard > .dashboard-content .dashboard-section {
+    background-color: rgba(255, 255, 255, 0.88);
+}
+
+@media (max-width: 600px) {
+    #dashboard > .dashboard-content::before {
+        background-position: center;
+    }
+}
+
+/* End mama mboga background */
+
+
+
+
+
+
+
+
