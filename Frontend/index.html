@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <script src="js/account-storage.js"></script>
@@ -270,16 +270,16 @@
                 <section class="settings-card">
                     <h3 id="settingsBusinessHeading">Business Profile</h3>
                     <div class="settings-grid">
-                        <label>Business Name
+                        <label id="settingsBusinessNameLabel">Business Name
                             <input id="settingBusinessName" type="text" maxlength="100" placeholder="Your business name">
                         </label>
-                        <label>Business Owner
+                        <label id="settingsOwnerNameLabel">Business Owner
                             <input id="settingOwnerName" type="text" maxlength="100" placeholder="Owner name">
                         </label>
-                        <label>Phone Number
+                        <label id="settingsPhoneLabel">Phone Number
                             <input id="settingPhone" type="tel" maxlength="30" placeholder="Business phone">
                         </label>
-                        <label>Business Location
+                        <label id="settingsLocationLabel">Business Location
                             <input id="settingLocation" type="text" maxlength="150" placeholder="Town or location">
                         </label>
                     </div>
@@ -294,7 +294,7 @@
                                 <option value="kis">Kiswahili (KIS)</option>
                             </select>
                         </label>
-                        <label>Currency
+                        <label id="settingsCurrencyLabel">Currency
                             <select id="settingCurrency">
                                 <option value="KSh">Kenyan Shilling (KSh)</option>
                             </select>
@@ -304,14 +304,14 @@
 
                 <section class="settings-card">
                     <h3 id="settingsReceiptHeading">Receipt Settings</h3>
-                    <label>Receipt Footer Message
+                    <label id="settingsReceiptFooterLabel">Receipt Footer Message
                         <input id="settingReceiptFooter" type="text" maxlength="200" placeholder="Thank you for shopping with us">
                     </label>
                 </section>
 
                 <section class="settings-card">
                     <h3 id="settingsInventoryHeading">Inventory Alerts</h3>
-                    <label>Default Low-Stock Warning Level
+                    <label id="settingsLowStockLabel">Default Low-Stock Warning Level
                         <input id="settingLowStock" type="number" min="0" max="1000000" step="1" value="5" required>
                     </label>
                     <p class="settings-help">This setting stores your preferred warning level. Existing product quantities will not be changed.</p>
@@ -319,7 +319,7 @@
 
                 <section class="settings-card" id="securityDevicesSection">
                     <h3>Security &amp; Devices</h3>
-                    <p class="settings-help">Choose your preferred security settings. These preferences will not enforce login until backend authentication is connected.</p>
+                    <p class="settings-help">Configure your sign-in preferences. Login is protected by your existing account session. Automatic inactivity locking and device-session management require separate implementation.</p>
 
                     <label class="security-setting">
                         <input id="securityRequireLogin" type="checkbox" checked>
@@ -340,11 +340,11 @@
                     </label>
 
                     <div class="settings-actions">
-                        <button class="button-primary" type="button" id="manageDevicesButton" disabled>Manage Devices</button>
-                        <button class="button-primary" type="button" id="logoutDeviceButton" disabled>Log Out</button>
+                        <button class="button-primary" type="button" id="manageDevicesButton">Manage Devices</button>
+                        <button class="button-primary" type="button" id="logoutDeviceButton">Log Out</button>
                     </div>
 
-                    <p class="settings-help" role="status">Device management, remote access revocation, and secure logout will become available after backend authentication is implemented.</p>
+                    <p class="settings-help" role="status">Log Out ends your current account session. Device management and remote session revocation are not available yet.</p>
                 </section>
 
                 <div class="settings-actions">
@@ -379,6 +379,9 @@
     "use strict";
 
     const KEY = "biasharaExpressSettings";
+    const SECURITY_KEY = "biasharaExpressSecurityPreferences";
+    const IDENTITY_KEY = "biasharaExpressIdentity";
+
     const defaults = {
         businessName: "",
         ownerName: "",
@@ -390,12 +393,54 @@
         lowStock: 5
     };
 
-    function loadSettings() {
+    const securityDefaults = {
+        requireLoginOnReopen: true,
+        autoLockMinutes: 5,
+        allowMultipleDevices: true
+    };
+
+    function readObject(key, fallback) {
         try {
-            const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
-            return { ...defaults, ...saved };
-        } catch {
-            return { ...defaults };
+            const value = JSON.parse(localStorage.getItem(key) || "null");
+            return value && typeof value === "object" && !Array.isArray(value)
+                ? { ...fallback, ...value }
+                : { ...fallback };
+        } catch (error) {
+            console.error("Could not read settings:", key, error);
+            return { ...fallback };
+        }
+    }
+
+    function loadSettings() {
+        const result = readObject(KEY, defaults);
+
+        if (!["en", "kis"].includes(result.language)) result.language = "en";
+        if (typeof result.lowStock !== "number" ||
+            !Number.isFinite(result.lowStock) ||
+            result.lowStock < 0) result.lowStock = defaults.lowStock;
+
+        return result;
+    }
+
+    function setLabelText(id, value) {
+        const element = document.getElementById(id);
+        if (!element) return;
+
+        // Preserve controls nested inside labels.
+        const control = element.querySelector("input, select, textarea");
+        if (control) {
+            let textNode = [...element.childNodes].find(
+                node => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+            );
+
+            if (!textNode) {
+                textNode = document.createTextNode("");
+                element.insertBefore(textNode, element.firstChild);
+            }
+
+            textNode.textContent = value + " ";
+        } else {
+            element.textContent = value;
         }
     }
 
@@ -409,22 +454,38 @@
             business: "Taarifa za Biashara",
             preferences: "Lugha na Sarafu",
             language: "Lugha ya Matumizi",
+            currency: "Sarafu",
             receipt: "Mipangilio ya Risiti",
+            footer: "Ujumbe wa Chini ya Risiti",
             inventory: "Arifa za Bidhaa",
+            lowStock: "Kiwango cha Tahadhari ya Bidhaa Chache",
             save: "Hifadhi Mipangilio",
             saved: "Mipangilio imehifadhiwa.",
-            failed: "Imeshindwa kuhifadhi mipangilio."
+            failed: "Imeshindwa kuhifadhi mipangilio.",
+            invalidStock: "Weka kiwango halali cha bidhaa chache (0 au zaidi).",
+            businessName: "Jina la Biashara",
+            ownerName: "Mmiliki wa Biashara",
+            phone: "Nambari ya Simu",
+            location: "Mahali pa Biashara"
         } : {
             heading: "Settings",
             subtitle: "Configure your business preferences.",
             business: "Business Profile",
             preferences: "Language and Currency",
             language: "Language of Use",
+            currency: "Currency",
             receipt: "Receipt Settings",
+            footer: "Receipt Footer Message",
             inventory: "Inventory Alerts",
+            lowStock: "Default Low-Stock Warning Level",
             save: "Save Settings",
             saved: "Settings saved successfully.",
-            failed: "Could not save settings."
+            failed: "Could not save settings. Please try again.",
+            invalidStock: "Enter a valid low-stock warning level (zero or greater).",
+            businessName: "Business Name",
+            ownerName: "Business Owner",
+            phone: "Phone Number",
+            location: "Business Location"
         };
 
         const setText = (id, value) => {
@@ -436,45 +497,55 @@
         setText("settingsSubtitle", text.subtitle);
         setText("settingsBusinessHeading", text.business);
         setText("settingsPreferencesHeading", text.preferences);
-        setText("settingsLanguageLabel", text.language);
         setText("settingsReceiptHeading", text.receipt);
         setText("settingsInventoryHeading", text.inventory);
         setText("settingsSaveButton", text.save);
 
+        setLabelText("settingsLanguageLabel", text.language);
+        setLabelText("settingsCurrencyLabel", text.currency);
+        setLabelText("settingsBusinessNameLabel", text.businessName);
+        setLabelText("settingsOwnerNameLabel", text.ownerName);
+        setLabelText("settingsPhoneLabel", text.phone);
+        setLabelText("settingsLocationLabel", text.location);
+        setLabelText("settingsReceiptFooterLabel", text.footer);
+        setLabelText("settingsLowStockLabel", text.lowStock);
+
         return text;
+    }
+
+    function renderIdentity(settings) {
+        const identity = readObject(IDENTITY_KEY, { type: "business", name: "" });
+        const displayName = identity.type === "owner"
+            ? settings.ownerName
+            : settings.businessName;
+
+        if (!displayName || !displayName.trim()) return;
+
+        const name = displayName.trim();
+        const heading = document.getElementById("welcomeHeading");
+        const profileName = document.querySelector("#profileButton .profile-details strong");
+        const avatar = document.querySelector("#profileButton .profile-avatar");
+
+        if (heading) heading.textContent = name;
+        if (profileName) profileName.textContent = name;
+        if (avatar) avatar.textContent = name.charAt(0).toUpperCase();
+        document.title = name + " | BiasharaExpress";
     }
 
     function initializeSettings() {
         const panel = document.getElementById("settingsContent");
         const dashboard = document.querySelector(".dashboard-content");
         const form = document.getElementById("settingsForm");
+
         if (!panel || !dashboard || !form) return;
 
-        const settings = loadSettings();
-        const securityDefaults = {
-            requireLoginOnReopen: true,
-            autoLockMinutes: 5,
-            allowMultipleDevices: true
-        };
-        const savedSecurity = (() => {
-            try {
-                return {
-                    ...securityDefaults,
-                    ...JSON.parse(localStorage.getItem("biasharaExpressSecurityPreferences") || "{}")
-                };
-            } catch {
-                return securityDefaults;
-            }
-        })();
-
-        const isSettingsPage = new URLSearchParams(location.search).get("settings") === "1";
+        const isSettingsPage =
+            new URLSearchParams(location.search).get("settings") === "1";
 
         panel.hidden = !isSettingsPage;
         dashboard.hidden = isSettingsPage;
 
         if (isSettingsPage) {
-            const heading = document.querySelector(".page-heading h2");
-            if (heading) heading.textContent = "Settings";
             document.querySelectorAll(".nav-link").forEach(link => {
                 const active = link.href.includes("settings=1");
                 link.classList.toggle("active", active);
@@ -482,6 +553,9 @@
                 else link.removeAttribute("aria-current");
             });
         }
+
+        const settings = loadSettings();
+        const security = readObject(SECURITY_KEY, securityDefaults);
 
         const fields = {
             settingBusinessName: settings.businessName,
@@ -496,67 +570,123 @@
 
         Object.entries(fields).forEach(([id, value]) => {
             const field = document.getElementById(id);
-            if (field) field.value = value;
+            if (field) field.value = String(value ?? "");
         });
 
-        document.getElementById("securityRequireLogin").checked = savedSecurity.requireLoginOnReopen !== false;
-        document.getElementById("securityAutoLock").value = ["1", "5", "15", "30"].includes(String(savedSecurity.autoLockMinutes))
-            ? String(savedSecurity.autoLockMinutes)
-            : "5";
-        document.getElementById("securityAllowMultipleDevices").checked = savedSecurity.allowMultipleDevices !== false;
+        const requireLogin = document.getElementById("securityRequireLogin");
+        const autoLock = document.getElementById("securityAutoLock");
+        const multipleDevices = document.getElementById("securityAllowMultipleDevices");
 
+        if (requireLogin) requireLogin.checked = security.requireLoginOnReopen !== false;
+        if (autoLock) {
+            autoLock.value = ["1", "5", "15", "30"].includes(String(security.autoLockMinutes))
+                ? String(security.autoLockMinutes) : "5";
+        }
+        if (multipleDevices) multipleDevices.checked = security.allowMultipleDevices !== false;
+
+        const languageSelector = document.getElementById("settingLanguage");
         let currentText = applyLanguage(settings.language);
 
-        document.getElementById("settingLanguage").addEventListener("change", event => {
-            currentText = applyLanguage(event.target.value);
-        });
+        if (languageSelector) {
+            languageSelector.addEventListener("change", () => {
+                currentText = applyLanguage(languageSelector.value);
+            });
+        }
 
         form.addEventListener("submit", event => {
             event.preventDefault();
 
+            const message = document.getElementById("settingsSaveMessage");
+            const field = id => document.getElementById(id);
+
+            const requiredIds = [
+                "settingBusinessName", "settingOwnerName", "settingPhone",
+                "settingLocation", "settingLanguage", "settingCurrency",
+                "settingReceiptFooter", "settingLowStock",
+                "securityRequireLogin", "securityAutoLock",
+                "securityAllowMultipleDevices"
+            ];
+
+            const missing = requiredIds.filter(id => !field(id));
+            if (missing.length) {
+                if (message) message.textContent =
+                    "Cannot save settings. Missing controls: " + missing.join(", ");
+                console.error("Settings controls missing:", missing);
+                return;
+            }
+
+            const lowStockRaw = field("settingLowStock").value.trim();
+            const lowStock = Number(lowStockRaw);
+
+            if (
+                lowStockRaw === "" ||
+                !Number.isFinite(lowStock) ||
+                lowStock < 0 ||
+                lowStock > 1000000 ||
+                !Number.isInteger(lowStock)
+            ) {
+                currentText = applyLanguage(field("settingLanguage").value);
+                if (message) message.textContent = currentText.invalidStock;
+                field("settingLowStock").focus();
+                return;
+            }
+
             const updated = {
-                businessName: document.getElementById("settingBusinessName").value.trim(),
-                ownerName: document.getElementById("settingOwnerName").value.trim(),
-                phone: document.getElementById("settingPhone").value.trim(),
-                location: document.getElementById("settingLocation").value.trim(),
-                language: document.getElementById("settingLanguage").value,
-                currency: document.getElementById("settingCurrency").value,
-                receiptFooter: document.getElementById("settingReceiptFooter").value.trim(),
-                lowStock: Number(document.getElementById("settingLowStock").value)
+                businessName: field("settingBusinessName").value.trim(),
+                ownerName: field("settingOwnerName").value.trim(),
+                phone: field("settingPhone").value.trim(),
+                location: field("settingLocation").value.trim(),
+                language: field("settingLanguage").value,
+                currency: field("settingCurrency").value,
+                receiptFooter: field("settingReceiptFooter").value.trim(),
+                lowStock
             };
 
-            if (!Number.isFinite(updated.lowStock) || updated.lowStock < 0) return;
+            const updatedSecurity = {
+                requireLoginOnReopen: requireLogin.checked,
+                autoLockMinutes: Number(autoLock.value),
+                allowMultipleDevices: multipleDevices.checked
+            };
+
+            if (!["en", "kis"].includes(updated.language)) {
+                if (message) message.textContent = "Choose a supported language.";
+                return;
+            }
+
+            if (!["1", "5", "15", "30"].includes(String(updatedSecurity.autoLockMinutes))) {
+                if (message) message.textContent = "Choose a valid automatic-lock duration.";
+                return;
+            }
 
             try {
-                localStorage.setItem(KEY, JSON.stringify({
-                    ...settings,
-                    ...updated
-                }));
+                localStorage.setItem(KEY, JSON.stringify(updated));
+                localStorage.setItem(SECURITY_KEY, JSON.stringify(updatedSecurity));
 
-                localStorage.setItem("biasharaExpressSecurityPreferences", JSON.stringify({
-                    requireLoginOnReopen: document.getElementById("securityRequireLogin").checked,
-                    autoLockMinutes: Number(document.getElementById("securityAutoLock").value),
-                    allowMultipleDevices: document.getElementById("securityAllowMultipleDevices").checked
-                }));
+                // Keep the display preference but update its name from the profile.
+                const identity = readObject(IDENTITY_KEY, { type: "business", name: "" });
+                const displayName = identity.type === "owner"
+                    ? updated.ownerName
+                    : updated.businessName;
+
+                if (displayName) {
+                    localStorage.setItem(IDENTITY_KEY, JSON.stringify({
+                        type: identity.type === "owner" ? "owner" : "business",
+                        name: displayName
+                    }));
+                }
 
                 currentText = applyLanguage(updated.language);
-                document.getElementById("settingsSaveMessage").textContent = currentText.saved;
+                renderIdentity(updated);
 
-                const owner = document.querySelector("#profileButton .profile-details strong");
-                if (owner && updated.ownerName) owner.textContent = updated.ownerName;
-
-                const avatar = document.querySelector("#profileButton .profile-avatar");
-                if (avatar && updated.ownerName) avatar.textContent = updated.ownerName.charAt(0).toUpperCase();
-            } catch {
-                document.getElementById("settingsSaveMessage").textContent = currentText.failed;
+                if (message) message.textContent = currentText.saved;
+                console.info("Settings saved for the current account.");
+            } catch (error) {
+                console.error("Settings save failed:", error);
+                if (message) message.textContent = currentText.failed;
             }
         });
 
-        const owner = document.querySelector("#profileButton .profile-details strong");
-        if (owner && settings.ownerName) owner.textContent = settings.ownerName;
-
-        const avatar = document.querySelector("#profileButton .profile-avatar");
-        if (avatar && settings.ownerName) avatar.textContent = settings.ownerName.charAt(0).toUpperCase();
+        renderIdentity(settings);
     }
 
     document.addEventListener("DOMContentLoaded", initializeSettings);
@@ -565,10 +695,40 @@
 
 <script src="js/date-rollover.js"></script>
 
-<script src="js/database/sqlite-adapter.bundle.js"></script>
-<script src="js/sync-worker.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    const isNative = !!window.androidBridge ||
+        !!(window.Capacitor &&
+           typeof window.Capacitor.isNativePlatform === "function" &&
+           window.Capacitor.isNativePlatform());
+
+    const adapter = document.createElement("script");
+    adapter.src = isNative
+        ? "js/database/sqlite-adapter.bundle.js"
+        : "js/database/browser-adapter.js";
+
+    adapter.onload = function () {
+        const syncWorker = document.createElement("script");
+        syncWorker.src = "js/sync-worker.js";
+        syncWorker.onerror = function () {
+            console.error("BiasharaExpress sync worker could not load.");
+        };
+        document.body.appendChild(syncWorker);
+    };
+
+    adapter.onerror = function () {
+        console.error("BiasharaExpress database adapter could not load.");
+    };
+
+    document.body.appendChild(adapter);
+})();
+</script>
 </body>
 </html>
+
+
 
 
 

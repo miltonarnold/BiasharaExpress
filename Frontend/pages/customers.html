@@ -96,12 +96,52 @@
         </div>
     </section>
 </main>
-<script src="../js/database/sqlite-adapter.bundle.js"></script>
-<script src="../js/sync-worker.js"></script>
-<script src="../js/contacts.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    const isNative = !!window.androidBridge ||
+        !!(window.Capacitor &&
+           typeof window.Capacitor.isNativePlatform === "function" &&
+           window.Capacitor.isNativePlatform());
+
+    const adapter = document.createElement("script");
+    adapter.src = isNative
+        ? "../js/database/sqlite-adapter.bundle.js"
+        : "../js/database/browser-adapter.js";
+
+    adapter.onload = function () {
+        const worker = document.createElement("script");
+        worker.src = "../js/sync-worker.js";
+
+        worker.onload = function () {
+        const page = document.createElement("script");
+        page.src = "../js/contacts.js";
+        page.onerror = function () {
+            console.error("BiasharaExpress page script could not load: ../js/contacts.js");
+        };
+        document.body.appendChild(page);
+        };
+
+        worker.onerror = function () {
+            console.error("BiasharaExpress sync worker could not load.");
+        };
+
+        document.body.appendChild(worker);
+    };
+
+    adapter.onerror = function () {
+        console.error("BiasharaExpress database adapter could not load.");
+    };
+
+    document.body.appendChild(adapter);
+})();
+</script>
 <script src="../js/date-rollover.js"></script>
 </body>
 </html>
+
+
 
 
 

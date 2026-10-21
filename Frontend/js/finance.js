@@ -490,13 +490,36 @@ async function initializeFinance() {
 
         await db.init();
 
-        const existingTransactions = readFinanceData(FINANCE_KEY);
+        // Read existing database records before writing anything.
+        const storedFinance = await db.get(FINANCE_KEY);
+        const storedSales = await db.get(SALES_KEY);
 
-        await db.put(FINANCE_KEY, existingTransactions, {
-            sync: false,
-            entity: 'finance',
-            recordId: FINANCE_KEY
-        });
+        let transactions;
+        if (Array.isArray(storedFinance)) {
+            transactions = storedFinance;
+        } else {
+            transactions = readFinanceData(FINANCE_KEY);
+            await db.put(FINANCE_KEY, transactions, {
+                sync: false,
+                entity: 'finance',
+                recordId: FINANCE_KEY
+            });
+        }
+
+        // Keep existing Finance calculations compatible with localStorage.
+        localStorage.setItem(FINANCE_KEY, JSON.stringify(transactions));
+
+        if (Array.isArray(storedSales)) {
+            localStorage.setItem(SALES_KEY, JSON.stringify(storedSales));
+        } else {
+            const existingSales = readFinanceData(SALES_KEY);
+            if (existingSales.length > 0) {
+                await db.put(SALES_KEY, existingSales, {
+                    sync: false
+                });
+            }
+            localStorage.setItem(SALES_KEY, JSON.stringify(existingSales));
+        }
 
         databaseReady = true;
         setFinanceTab('capital');
@@ -512,7 +535,7 @@ function renderFinanceAll() {
     renderFinanceRows();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initializeFinancePage() {
     document.getElementById('capitalTab')
         ?.addEventListener('click', () => setFinanceTab('capital'));
 
@@ -560,8 +583,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (date && !date.value) date.value = financeToday();
 
     initializeFinance();
-});
+}
 
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeFinancePage, { once: true });
+} else {
+    initializeFinancePage();
+}
+
+// FINANCE_DELEGATED_TAB_FIX
+document.addEventListener('click', function (event) {
+    const tab = event.target.closest(
+        '#capitalTab, #expenseTab, #withdrawalTab'
+    );
+
+    if (!tab) return;
+
+    const tabTypes = {
+        capitalTab: 'capital',
+        expenseTab: 'expense',
+        withdrawalTab: 'withdrawal'
+    };
+
+    const type = tabTypes[tab.id];
+    if (type) setFinanceTab(type);
+});
 window.renderFinance = renderFinanceAll;
+
+
 
 

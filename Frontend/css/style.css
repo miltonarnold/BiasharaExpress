@@ -2084,3 +2084,82 @@ textarea:focus-visible {
     .settings-grid { grid-template-columns: 1fr; }
     .settings-card { padding: 16px; }
 }
+
+
+/* SECURITY_DEVICES_LAYOUT_FIX */
+#securityDevicesSection .security-setting {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin: 14px 0;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+#securityDevicesSection .security-setting input[type="checkbox"] {
+    flex: 0 0 18px;
+    width: 18px;
+    min-height: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    accent-color: #07875E;
+}
+
+#securityDevicesSection > label[for="securityAutoLock"] {
+    display: block;
+    margin: 18px 0 8px;
+    line-height: 1.5;
+}
+
+#securityDevicesSection #securityAutoLock {
+    display: block;
+    max-width: 320px;
+    margin-bottom: 16px;
+}
+
+#securityDevicesSection .settings-actions {
+    margin-top: 22px;
+}
+
+#securityDevicesSection .settings-actions button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+#securityDevicesSection .settings-help {
+    line-height: 1.6;
+    margin-top: 12px;
+}
+
+@media (max-width: 650px) {
+    #securityDevicesSection #securityAutoLock {
+        max-width: 100%;
+    }
+}
+
+/* SECURITY_BUTTONS_SPACING_FIX */
+#securityDevicesSection .settings-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+#securityDevicesSection .settings-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 140px;
+    margin: 0;
+    white-space: normal;
+}
+
+#securityDevicesSection .settings-actions button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
