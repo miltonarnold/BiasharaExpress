@@ -1,4 +1,4 @@
-﻿package com.biasharaexpress.backend.config;
+package com.biasharaexpress.backend.config;
 
 import com.biasharaexpress.backend.security.SessionAuthenticationFilter;
 import java.util.Arrays;
