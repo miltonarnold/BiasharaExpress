@@ -1,6 +1,7 @@
 package com.biasharaexpress.backend.config;
 
 import com.biasharaexpress.backend.security.SessionAuthenticationFilter;
+import jakarta.servlet.DispatcherType;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -59,12 +60,15 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .cors(Customizer.withDefaults())
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
             )
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
             .authorizeHttpRequests(auth -> auth
+                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                 .requestMatchers(
                     HttpMethod.POST,
                     "/api/auth/register",
@@ -84,4 +88,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
