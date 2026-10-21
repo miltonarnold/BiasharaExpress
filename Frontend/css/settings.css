@@ -1,0 +1,284 @@
+﻿/* BiasharaExpress Premium Settings Theme */
+body.settings-page {
+    background:
+        radial-gradient(ellipse at 5% 0%, rgba(132, 204, 155, .23), transparent 36%),
+        linear-gradient(135deg, #f0f7f1 0%, #f7faf7 48%, #eaf4ed 100%) !important;
+    color: #203b2a !important;
+    min-height: 100vh;
+}
+
+.settings-page .sidebar {
+    background: linear-gradient(165deg, #173f2b 0%, #245b3b 58%, #32754a 100%) !important;
+    color: #fff !important;
+    box-shadow: 8px 0 30px rgba(22, 69, 42, .12) !important;
+}
+
+.settings-page .sidebar a,
+.settings-page .sidebar .nav-link {
+    color: rgba(255,255,255,.84) !important;
+    border-radius: 10px !important;
+    transition: background .2s ease, transform .2s ease !important;
+}
+
+.settings-page .sidebar a:hover,
+.settings-page .sidebar .nav-link:hover {
+    background: rgba(255,255,255,.13) !important;
+    color: #fff !important;
+    transform: translateX(3px);
+}
+
+.settings-page .sidebar a.active,
+.settings-page .sidebar .nav-link.active {
+    background: linear-gradient(100deg, #b8efc5, #e0f8e6) !important;
+    color: #19482d !important;
+    box-shadow: 0 5px 18px rgba(0,0,0,.12) !important;
+}
+
+.settings-page .main-content,
+.settings-page main {
+    background: transparent !important;
+}
+
+.settings-page #settingsPage {
+    padding: 30px clamp(16px, 3vw, 42px) 44px !important;
+}
+
+.settings-page #settingsPage > h1,
+.settings-page #settingsPage > h2 {
+    color: #205b37 !important;
+    font-size: clamp(27px, 3vw, 36px) !important;
+    font-weight: 800 !important;
+    letter-spacing: -.8px !important;
+    margin-bottom: 8px !important;
+}
+
+.settings-page .settings-content {
+    max-width: 1120px !important;
+    margin-top: 22px !important;
+}
+
+.settings-page #settingsForm {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 22px !important;
+    align-items: start !important;
+}
+
+.settings-page #settingsForm > section,
+.settings-page #settingsForm > .settings-section,
+.settings-page #settingsForm > div:has(input),
+.settings-page #settingsForm > div:has(select) {
+    background: rgba(255,255,255,.88) !important;
+    border: 1px solid rgba(70, 130, 86, .16) !important;
+    border-radius: 19px !important;
+    padding: 24px !important;
+    box-shadow: 0 10px 30px rgba(31, 81, 47, .07),
+                0 2px 7px rgba(31, 81, 47, .035) !important;
+    backdrop-filter: blur(12px) !important;
+    transition: transform .2s ease, box-shadow .2s ease !important;
+}
+
+.settings-page #settingsForm > section:hover,
+.settings-page #settingsForm > .settings-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 34px rgba(31, 81, 47, .11) !important;
+}
+
+.settings-page #settingsForm h2,
+.settings-page #settingsForm h3,
+.settings-page #settingsForm legend {
+    color: #286640 !important;
+    font-weight: 750 !important;
+    margin-bottom: 18px !important;
+}
+
+.settings-page #settingsForm label {
+    display: block;
+    color: #344d3b !important;
+    font-weight: 600 !important;
+    margin: 13px 0 7px !important;
+}
+
+.settings-page #settingsForm input:not([type="checkbox"]):not([type="radio"]),
+.settings-page #settingsForm select,
+.settings-page #settingsForm textarea {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    background: #f7faf7 !important;
+    color: #203b2a !important;
+    border: 1px solid #d7e5d9 !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    min-height: 44px !important;
+    outline: none !important;
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease !important;
+}
+
+.settings-page #settingsForm input:focus,
+.settings-page #settingsForm select:focus,
+.settings-page #settingsForm textarea:focus {
+    background: #fff !important;
+    border-color: #55a96d !important;
+    box-shadow: 0 0 0 4px rgba(85,169,109,.14) !important;
+}
+
+.settings-page #settingsForm input[type="checkbox"],
+.settings-page #settingsForm input[type="radio"] {
+    accent-color: #34834d !important;
+}
+
+.settings-page #settingsForm button[type="submit"],
+.settings-page #settingsForm #settingsSaveButton {
+    grid-column: 1 / -1 !important;
+    justify-self: start !important;
+    min-width: 190px !important;
+    padding: 14px 28px !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: linear-gradient(110deg, #24643b, #49a963) !important;
+    color: #fff !important;
+    font-size: 15px !important;
+    font-weight: 750 !important;
+    letter-spacing: .2px !important;
+    box-shadow: 0 8px 20px rgba(42, 127, 67, .25) !important;
+    cursor: pointer !important;
+    transition: transform .2s ease, box-shadow .2s ease !important;
+}
+
+.settings-page #settingsForm button[type="submit"]:hover,
+.settings-page #settingsForm #settingsSaveButton:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 25px rgba(42, 127, 67, .32) !important;
+}
+
+.settings-page #settingsSaveMessage {
+    color: #286640 !important;
+    font-weight: 600 !important;
+}
+
+.settings-page #settingsPage footer,
+.settings-page footer {
+    color: #708477 !important;
+}
+
+@media (max-width: 760px) {
+    .settings-page #settingsForm {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .settings-page #settingsPage {
+        padding: 20px 14px 32px !important;
+    }
+
+    .settings-page #settingsForm > section,
+    .settings-page #settingsForm > .settings-section {
+        padding: 18px !important;
+    }
+}
+
+/* BiasharaExpress Premium Settings Theme */
+body.settings-page {
+    background: linear-gradient(135deg, #e7f3e9 0%, #f0f5ef 45%, #dceee2 100%) !important;
+    color: #183b2a !important;
+}
+
+body.settings-page .main-content {
+    background: transparent !important;
+}
+
+body.settings-page .settings-content {
+    background: linear-gradient(145deg, #fafffb 0%, #eaf5ec 100%) !important;
+    border: 1px solid #c5dfca !important;
+    border-radius: 20px !important;
+    box-shadow: 0 12px 32px rgba(25, 92, 51, .12) !important;
+    padding: 28px !important;
+}
+
+body.settings-page h1,
+body.settings-page .page-title {
+    color: #14532d !important;
+    text-shadow: 0 2px 12px rgba(22, 101, 52, .12) !important;
+}
+
+body.settings-page h2,
+body.settings-page h3 {
+    color: #237344 !important;
+}
+
+body.settings-page .settings-content form,
+body.settings-page .settings-content .settings-section,
+body.settings-page .settings-content section {
+    background: rgba(255, 255, 255, .72) !important;
+    border: 1px solid #d4e7d7 !important;
+    border-radius: 15px !important;
+    padding: 20px !important;
+    margin-bottom: 18px !important;
+    box-shadow: 0 5px 16px rgba(31, 84, 48, .06) !important;
+}
+
+body.settings-page input,
+body.settings-page select,
+body.settings-page textarea {
+    background: #f4faf5 !important;
+    border: 1px solid #bdd8c3 !important;
+    border-radius: 9px !important;
+    color: #183b2a !important;
+    padding: 11px 13px !important;
+}
+
+body.settings-page input:focus,
+body.settings-page select:focus,
+body.settings-page textarea:focus {
+    outline: none !important;
+    border-color: #38a169 !important;
+    box-shadow: 0 0 0 3px rgba(56, 161, 105, .15) !important;
+}
+
+body.settings-page button,
+body.settings-page .button-primary {
+    background: linear-gradient(135deg, #27834b, #14532d) !important;
+    color: #ffffff !important;
+    border: 1px solid #277b47 !important;
+    border-radius: 10px !important;
+    padding: 12px 20px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 6px 15px rgba(20, 83, 45, .2) !important;
+    transition: transform .2s ease, box-shadow .2s ease !important;
+}
+
+body.settings-page button:hover,
+body.settings-page .button-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 9px 20px rgba(20, 83, 45, .28) !important;
+}
+
+body.settings-page label {
+    color: #28563a !important;
+    font-weight: 600 !important;
+}
+
+body.settings-page .sidebar {
+    background: linear-gradient(180deg, #123d28 0%, #185a37 55%, #207447 100%) !important;
+    box-shadow: 5px 0 24px rgba(13, 64, 35, .15) !important;
+}
+
+body.settings-page .sidebar a {
+    color: #e5f5e9 !important;
+    border-radius: 9px !important;
+    margin: 4px 10px !important;
+    transition: background .2s ease, transform .2s ease !important;
+}
+
+body.settings-page .sidebar a:hover,
+body.settings-page .sidebar a.active {
+    background: linear-gradient(100deg, #3d9b61, #287d49) !important;
+    color: #ffffff !important;
+    box-shadow: inset 3px 0 #c4f0ce, 0 4px 12px rgba(0, 0, 0, .12) !important;
+}
+
+@media (max-width: 768px) {
+    body.settings-page .settings-content {
+        padding: 14px !important;
+        border-radius: 14px !important;
+    }
+}

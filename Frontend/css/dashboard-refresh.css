@@ -795,3 +795,253 @@ select:focus-visible {
     }
 }
 
+
+/* ===== BiasharaExpress: precise sidebar branding ===== */
+body:not(.settings-page) #sidebar .brand {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 11px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 14px 12px !important;
+    margin: 0 0 22px !important;
+    overflow: hidden !important;
+    border-radius: 14px !important;
+    background:
+        radial-gradient(ellipse at 95% 0%, rgba(155,255,184,.24), transparent 55%),
+        linear-gradient(125deg, #103c27, #176b3b 65%, #24894a) !important;
+    border: 1px solid rgba(192,255,207,.35) !important;
+    border-bottom: 3px solid #d6b957 !important;
+    box-shadow: 0 8px 20px rgba(8,55,29,.28),
+                inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+/* Replace BE with a currency emblem */
+body:not(.settings-page) #sidebar .brand .brand-logo {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 43px !important;
+    width: 43px !important;
+    height: 43px !important;
+    min-width: 43px !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+    background: linear-gradient(145deg, #fff1b9, #d9b448 70%, #c49a2d) !important;
+    border: 2px solid rgba(255,255,255,.8) !important;
+    color: #16472b !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    box-shadow: 0 3px 10px rgba(0,0,0,.2),
+                inset 0 1px 2px rgba(255,255,255,.7) !important;
+}
+
+body:not(.settings-page) #sidebar .brand .brand-logo::before {
+    content: "KSh" !important;
+    color: #16472b !important;
+    font-family: "Segoe UI", Arial, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: -.5px !important;
+}
+
+/* Fit the full business name */
+body:not(.settings-page) #sidebar .brand .brand-text {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    overflow: hidden !important;
+}
+
+body:not(.settings-page) #sidebar .brand .brand-text h1 {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #ffffff !important;
+    font-family: "Segoe UI", Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 850 !important;
+    letter-spacing: -.55px !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    text-shadow: 0 2px 6px rgba(0,0,0,.2) !important;
+}
+
+body:not(.settings-page) #sidebar .brand .brand-text p {
+    margin: 4px 0 0 !important;
+    padding: 0 !important;
+    color: #d8f5df !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: .65px !important;
+    line-height: 1.35 !important;
+}
+
+@media (max-width: 300px) {
+    body:not(.settings-page) #sidebar .brand .brand-logo {
+        flex-basis: 36px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+    }
+
+    body:not(.settings-page) #sidebar .brand .brand-text h1 {
+        font-size: 14px !important;
+        letter-spacing: -.6px !important;
+    }
+}
+
+/* ===== Bottom sidebar BiasharaExpress ribbon ===== */
+body:not(.settings-page) #sidebar .sidebar-footer,
+body:not(.settings-page) #sidebar .sidebar-bottom,
+body:not(.settings-page) #sidebar .sidebar-brand-footer,
+body:not(.settings-page) #sidebar .app-footer-brand {
+    position: relative !important;
+    box-sizing: border-box !important;
+    margin: auto 10px 12px !important;
+    padding: 13px 11px !important;
+    border-radius: 13px !important;
+    background:
+        radial-gradient(ellipse at 95% 0%, rgba(153,255,183,.22), transparent 58%),
+        linear-gradient(120deg, #103b26, #176b3b 65%, #25884a) !important;
+    border: 1px solid rgba(198,244,206,.32) !important;
+    border-bottom: 3px solid #d7b852 !important;
+    box-shadow: 0 6px 17px rgba(5,48,24,.24),
+                inset 0 1px 0 rgba(255,255,255,.18) !important;
+    color: #ffffff !important;
+}
+
+/* Footer brand text */
+body:not(.settings-page) #sidebar .sidebar-footer .brand-name,
+body:not(.settings-page) #sidebar .sidebar-bottom .brand-name,
+body:not(.settings-page) #sidebar .sidebar-brand-footer .brand-name,
+body:not(.settings-page) #sidebar .app-footer-brand .brand-name,
+body:not(.settings-page) #sidebar .sidebar-footer h3,
+body:not(.settings-page) #sidebar .sidebar-bottom h3 {
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    letter-spacing: .15px !important;
+    line-height: 1.4 !important;
+    overflow-wrap: anywhere !important;
+    text-shadow: 0 1px 5px rgba(0,0,0,.2) !important;
+}
+
+body:not(.settings-page) #sidebar .sidebar-footer p,
+body:not(.settings-page) #sidebar .sidebar-bottom p,
+body:not(.settings-page) #sidebar .sidebar-brand-footer p,
+body:not(.settings-page) #sidebar .app-footer-brand p {
+    color: #d8f5df !important;
+    font-size: 10px !important;
+    letter-spacing: .5px !important;
+}
+
+/* Sidebar bottom separator */
+body:not(.settings-page) #sidebar .sidebar-footer::before,
+body:not(.settings-page) #sidebar .sidebar-bottom::before,
+body:not(.settings-page) #sidebar .sidebar-brand-footer::before,
+body:not(.settings-page) #sidebar .app-footer-brand::before {
+    content: "";
+    display: block;
+    height: 2px;
+    margin-bottom: 9px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #d7b852, #8ed8a0, transparent);
+    opacity: .9;
+}
+
+/* Ensure footer stays inside the sidebar */
+body:not(.settings-page) #sidebar {
+    min-height: 0;
+}
+
+
+/* BiasharaExpress sidebar ribbon and dashboard footer */
+#sidebar .sidebar-footer {
+    display: block !important;
+    margin: 18px 12px 12px !important;
+    padding: 14px 12px !important;
+    border: 1px solid rgba(212, 175, 55, 0.38) !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg, #063f31 0%, #087957 58%, #0c9a6c 100%) !important;
+    box-shadow: 0 7px 20px rgba(0, 55, 39, 0.24),
+                inset 0 1px 0 rgba(255, 255, 255, 0.13) !important;
+    color: #ffffff !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+#sidebar .sidebar-footer .connection-status {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    padding: 10px 11px !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 9px !important;
+    background: rgba(255, 255, 255, 0.09) !important;
+    color: #ffffff !important;
+}
+
+#sidebar .sidebar-footer .connection-status strong {
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+}
+
+#sidebar .sidebar-footer .status-indicator {
+    background: #75f0b1 !important;
+    box-shadow: 0 0 9px rgba(117, 240, 177, 0.7) !important;
+    flex-shrink: 0 !important;
+}
+
+.app-footer {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 24px 0 0 !important;
+    padding: 18px 16px !important;
+    border-top: 1px solid rgba(8, 121, 87, 0.22) !important;
+    background: linear-gradient(90deg, rgba(6, 63, 49, 0.04), rgba(12, 154, 108, 0.13), rgba(6, 63, 49, 0.04)) !important;
+    position: relative !important;
+}
+
+.app-footer p {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 10px 24px !important;
+    border: 1px solid rgba(212, 175, 55, 0.55) !important;
+    border-radius: 30px !important;
+    background: linear-gradient(135deg, #064a38, #07875e, #0b9d70) !important;
+    box-shadow: 0 5px 16px rgba(6, 74, 56, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    letter-spacing: 1.2px !important;
+    text-align: center !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+}
+
+@media (max-width: 768px) {
+    .app-footer {
+        margin-top: 16px !important;
+        padding: 14px 10px !important;
+    }
+
+    .app-footer p {
+        font-size: 12px !important;
+        letter-spacing: 0.8px !important;
+    }
+}

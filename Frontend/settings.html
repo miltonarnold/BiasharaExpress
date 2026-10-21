@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | BiasharaExpress</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard-refresh.css">
+<script src="js/account-storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/auth-guard.js"></script>
+
+    <link rel="stylesheet" href="css/settings.css?v=7">
+</head>
+<body class="settings-page">
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>BiasharaExpress</h2>
+            </div>
+            <nav class="sidebar-nav" aria-label="Main navigation">
+                <a class="nav-link" href="index.html">Dashboard</a>
+                <a class="nav-link" href="pages/sales.html">Sales &amp; POS</a>
+                <a class="nav-link" href="pages/products.html">Products</a>
+                <a class="nav-link" href="pages/purchases.html">Purchases</a>
+                <a class="nav-link" href="pages/finance.html">Expenses</a>
+                <a class="nav-link" href="pages/debts.html">Customer Debts</a>
+                <a class="nav-link" href="pages/creditors.html">Supplier Creditors</a>
+                <a class="nav-link" href="pages/capital.html">Capital &amp; Withdrawals</a>
+                <a class="nav-link" href="pages/reports.html">Reports</a>
+                <a class="nav-link" href="pages/customers.html">Customers</a>
+                <a class="nav-link" href="pages/suppliers.html">Suppliers</a>
+                <a class="nav-link active" href="settings.html" aria-current="page">Settings</a>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="settingsPage">
+            <header class="page-heading">
+                <div>
+                    <h1>Settings</h1>
+                    <p>Configure your business preferences.</p>
+                </div>
+            </header>
+
+            <section id="settingsContent" class="settings-content">
+                <form id="settingsForm">
+                    <section class="settings-card">
+                        <h3 id="settingsBusinessHeading">Business Profile</h3>
+                        <div class="settings-grid">
+                            <label id="settingsBusinessNameLabel">Business Name
+                                <input id="settingBusinessName" type="text" maxlength="100" placeholder="Your business name">
+                            </label>
+                            <label id="settingsOwnerNameLabel">Business Owner
+                                <input id="settingOwnerName" type="text" maxlength="100" placeholder="Owner name">
+                            </label>
+                            <label id="settingsPhoneLabel">Phone Number
+                                <input id="settingPhone" type="tel" maxlength="30" placeholder="Business phone">
+                            </label>
+                            <label id="settingsLocationLabel">Business Location
+                                <input id="settingLocation" type="text" maxlength="150" placeholder="Town or location">
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="settings-card">
+                        <h3 id="settingsPreferencesHeading">Language and Currency</h3>
+                        <div class="settings-grid">
+                            <label id="settingsLanguageLabel" for="settingLanguage">Language of Use
+                                <select id="settingLanguage">
+                                    <option value="en">English (ENG)</option>
+                                    <option value="kis">Kiswahili (KIS)</option>
+                                </select>
+                            </label>
+                            <label id="settingsCurrencyLabel" for="settingCurrency">Currency
+                                <select id="settingCurrency">
+                                    <option value="KSh">Kenyan Shilling (KSh)</option>
+                                </select>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="settings-card">
+                        <h3 id="settingsReceiptHeading">Receipt Settings</h3>
+                        <label id="settingsReceiptFooterLabel">Receipt Footer Message
+                            <input id="settingReceiptFooter" type="text" maxlength="200" placeholder="Thank you for shopping with us">
+                        </label>
+                    </section>
+
+                    <section class="settings-card">
+                        <h3 id="settingsInventoryHeading">Inventory Alerts</h3>
+                        <label id="settingsLowStockLabel" for="settingLowStock">Default Low-Stock Warning Level
+                            <input id="settingLowStock" type="number" min="0" max="1000000" step="1" value="5" required>
+                        </label>
+                        <p class="settings-help">This setting stores your preferred warning level. Existing product quantities will not be changed.</p>
+                    </section>
+
+                    <section class="settings-card" id="securityDevicesSection">
+                        <h3>Security &amp; Devices</h3>
+                        <p class="settings-help">Configure your sign-in preferences. Automatic inactivity locking and device-session management require separate implementation.</p>
+
+                        <label class="security-setting">
+                            <input id="securityRequireLogin" type="checkbox" checked>
+                            Require login whenever the app is reopened
+                        </label>
+
+                        <label for="securityAutoLock">Automatic lock after inactivity</label>
+                        <select id="securityAutoLock">
+                            <option value="1">1 minute</option>
+                            <option value="5" selected>5 minutes</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                        </select>
+
+                        <label class="security-setting">
+                            <input id="securityAllowMultipleDevices" type="checkbox" checked>
+                            Allow multiple authorised devices
+                        </label>
+
+                        <div class="settings-actions">
+                            <button class="button-primary" type="button" id="manageDevicesButton">Manage Devices</button>
+                            <button class="button-primary" type="button" id="logoutDeviceButton">Log Out</button>
+                        </div>
+
+                        <p class="settings-help" role="status">Device management and remote session revocation are not available yet.</p>
+                    </section>
+
+                    <div class="settings-actions">
+                        <button class="button-primary" type="submit" id="settingsSaveButton">Save Settings</button>
+                        <span id="settingsSaveMessage" role="status" aria-live="polite"></span>
+                    </div>
+                </form>
+            </section>
+
+            <footer class="app-footer">
+                <p>BiasharaExpress</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/date-rollover.js"></script>
+    <script>
+    (function () {
+        "use strict";
+
+        const isNative = !!window.androidBridge ||
+            !!(window.Capacitor &&
+               typeof window.Capacitor.isNativePlatform === "function" &&
+               window.Capacitor.isNativePlatform());
+
+        const adapter = document.createElement("script");
+        adapter.src = isNative
+            ? "js/database/sqlite-adapter.bundle.js"
+            : "js/database/browser-adapter.js";
+
+        adapter.onload = function () {
+            const syncWorker = document.createElement("script");
+            syncWorker.src = "js/sync-worker.js";
+            syncWorker.onerror = function () {
+                console.error("BiasharaExpress sync worker could not load.");
+            };
+            document.body.appendChild(syncWorker);
+        };
+
+        adapter.onerror = function () {
+            console.error("BiasharaExpress database adapter could not load.");
+        };
+
+        document.body.appendChild(adapter);
+    })();
+    </script>
+    <script src="js/settings.js" defer></script>
+</body>
+</html>

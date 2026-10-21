@@ -2163,3 +2163,615 @@ textarea:focus-visible {
     opacity: 0.55;
     cursor: not-allowed;
 }
+/* BiasharaExpress Premium Dashboard Navigation */
+body:not(.settings-page) .sidebar {
+    background: linear-gradient(180deg, #123d28 0%, #185a37 55%, #207447 100%) !important;
+    border-right: 1px solid #246744 !important;
+    box-shadow: 5px 0 24px rgba(13, 64, 35, .16) !important;
+}
+
+body:not(.settings-page) .sidebar a,
+body:not(.settings-page) .sidebar .nav-link,
+body:not(.settings-page) .sidebar nav a {
+    color: #e5f5e9 !important;
+    border-radius: 9px !important;
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease !important;
+}
+
+body:not(.settings-page) .sidebar a:hover,
+body:not(.settings-page) .sidebar .nav-link:hover,
+body:not(.settings-page) .sidebar nav a:hover {
+    background: rgba(112, 207, 143, .18) !important;
+    color: #ffffff !important;
+    transform: translateX(3px) !important;
+}
+
+body:not(.settings-page) .sidebar a.active,
+body:not(.settings-page) .sidebar .nav-link.active,
+body:not(.settings-page) .sidebar nav a[aria-current="page"] {
+    background: linear-gradient(100deg, #3d9b61, #287d49) !important;
+    color: #ffffff !important;
+    border-left: 3px solid #c4f0ce !important;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, .15) !important;
+}
+
+body:not(.settings-page) .sidebar h1,
+body:not(.settings-page) .sidebar h2,
+body:not(.settings-page) .sidebar .logo {
+    color: #ffffff !important;
+}
+
+body:not(.settings-page) .sidebar .logo,
+body:not(.settings-page) .sidebar .brand {
+    text-shadow: 0 2px 12px rgba(0, 0, 0, .18) !important;
+}
+
+/* =========================================================
+   BIASHARAEXPRESS - PREMIUM FINANCIAL DASHBOARD
+   ========================================================= */
+
+body:not(.settings-page) {
+    background:
+        radial-gradient(ellipse at 90% 0%, rgba(75, 181, 112, .13), transparent 36%),
+        linear-gradient(135deg, #f0f7f1 0%, #f7faf7 55%, #e8f4eb 100%) !important;
+    color: #183b2a;
+}
+
+/* Dashboard header: glossy emerald */
+body:not(.settings-page) .dashboard-header,
+body:not(.settings-page) .main-header,
+body:not(.settings-page) .topbar,
+body:not(.settings-page) header.page-header,
+body:not(.settings-page) .welcome-section {
+    position: relative !important;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 88% 5%, rgba(190, 255, 207, .32), transparent 30%),
+        radial-gradient(ellipse at 70% 120%, rgba(86, 201, 125, .28), transparent 38%),
+        linear-gradient(115deg, #104b2d 0%, #187342 48%, #269653 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(191, 255, 207, .35) !important;
+    border-radius: 18px !important;
+    box-shadow:
+        0 12px 30px rgba(17, 94, 48, .20),
+        inset 0 1px 0 rgba(255, 255, 255, .22) !important;
+}
+
+/* Financial decorative shapes */
+body:not(.settings-page) .dashboard-header::after,
+body:not(.settings-page) .main-header::after,
+body:not(.settings-page) .topbar::after,
+body:not(.settings-page) header.page-header::after,
+body:not(.settings-page) .welcome-section::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    width: 250px;
+    height: 180px;
+    right: 18px;
+    top: -20px;
+    opacity: .72;
+    background:
+        radial-gradient(circle at 78% 24%, rgba(220, 255, 227, .45) 0 3px, transparent 4px),
+        radial-gradient(circle at 52% 45%, rgba(220, 255, 227, .26) 0 48px, transparent 49px),
+        radial-gradient(circle at 82% 70%, rgba(220, 255, 227, .20) 0 68px, transparent 69px);
+    border-radius: 50%;
+}
+
+/* Keep header text readable */
+body:not(.settings-page) .dashboard-header h1,
+body:not(.settings-page) .main-header h1,
+body:not(.settings-page) .topbar h1,
+body:not(.settings-page) header.page-header h1,
+body:not(.settings-page) .welcome-section h1,
+body:not(.settings-page) .dashboard-header p,
+body:not(.settings-page) .main-header p,
+body:not(.settings-page) .topbar p,
+body:not(.settings-page) .welcome-section p {
+    color: #ffffff !important;
+}
+
+body:not(.settings-page) .dashboard-header h1,
+body:not(.settings-page) .main-header h1,
+body:not(.settings-page) .welcome-section h1 {
+    letter-spacing: -.5px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, .16);
+}
+
+/* Dashboard financial summary cards */
+body:not(.settings-page) .stat-card,
+body:not(.settings-page) .summary-card,
+body:not(.settings-page) .metric-card,
+body:not(.settings-page) .dashboard-card,
+body:not(.settings-page) .stats-card {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(235, 247, 237, .96)) !important;
+    border: 1px solid #d3e8d7 !important;
+    border-radius: 16px !important;
+    box-shadow:
+        0 7px 20px rgba(26, 89, 47, .075),
+        inset 0 1px 0 #ffffff !important;
+    transition: transform .22s ease, box-shadow .22s ease !important;
+}
+
+body:not(.settings-page) .stat-card::before,
+body:not(.settings-page) .summary-card::before,
+body:not(.settings-page) .metric-card::before,
+body:not(.settings-page) .dashboard-card::before,
+body:not(.settings-page) .stats-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #17683b, #58bd78, #b0ebbd);
+    pointer-events: none;
+}
+
+body:not(.settings-page) .stat-card:hover,
+body:not(.settings-page) .summary-card:hover,
+body:not(.settings-page) .metric-card:hover,
+body:not(.settings-page) .dashboard-card:hover,
+body:not(.settings-page) .stats-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 13px 26px rgba(26, 89, 47, .13) !important;
+}
+
+body:not(.settings-page) .stat-card h2,
+body:not(.settings-page) .stat-card h3,
+body:not(.settings-page) .summary-card h2,
+body:not(.settings-page) .summary-card h3,
+body:not(.settings-page) .metric-card h2,
+body:not(.settings-page) .metric-card h3 {
+    color: #245c39;
+}
+
+body:not(.settings-page) .stat-card .amount,
+body:not(.settings-page) .summary-card .amount,
+body:not(.settings-page) .metric-card .amount,
+body:not(.settings-page) .stat-value {
+    color: #17683b;
+    font-weight: 800;
+}
+
+/* Dashboard charts, tables and content panels */
+body:not(.settings-page) .chart-container,
+body:not(.settings-page) .dashboard-panel,
+body:not(.settings-page) .recent-transactions,
+body:not(.settings-page) .activity-panel {
+    background: linear-gradient(145deg, #ffffff, #f0f8f1) !important;
+    border: 1px solid #d7e9da !important;
+    border-radius: 16px !important;
+    box-shadow: 0 7px 22px rgba(26, 89, 47, .07) !important;
+}
+
+body:not(.settings-page) .main-content {
+    background-color: transparent;
+}
+
+body:not(.settings-page) .main-content h1,
+body:not(.settings-page) .main-content h2 {
+    color: #205d37;
+}
+
+body:not(.settings-page) .main-content button,
+body:not(.settings-page) .main-content .button-primary {
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+body:not(.settings-page) .main-content .button-primary {
+    background: linear-gradient(120deg, #21834a, #146338) !important;
+    color: #ffffff !important;
+    border: 1px solid #247c47 !important;
+    box-shadow: 0 5px 13px rgba(24, 111, 58, .18);
+}
+
+body:not(.settings-page) .main-content .button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(24, 111, 58, .25);
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+    body:not(.settings-page) .dashboard-header,
+    body:not(.settings-page) .main-header,
+    body:not(.settings-page) .topbar,
+    body:not(.settings-page) .welcome-section {
+        border-radius: 13px !important;
+    }
+
+    body:not(.settings-page) .dashboard-header::after,
+    body:not(.settings-page) .main-header::after,
+    body:not(.settings-page) .topbar::after,
+    body:not(.settings-page) .welcome-section::after {
+        opacity: .35;
+        right: -90px;
+    }
+}
+
+/* BIASHARAEXPRESS - DASHBOARD TYPOGRAPHY AND READABILITY */
+
+body:not(.settings-page) {
+    font-family: "Segoe UI", Arial, sans-serif !important;
+    color: #20372a !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+body:not(.settings-page) .main-content {
+    color: #20372a !important;
+    line-height: 1.6;
+}
+
+body:not(.settings-page) .main-content h1 {
+    color: #164c2c !important;
+    font-size: clamp(25px, 2.5vw, 34px) !important;
+    font-weight: 800 !important;
+    letter-spacing: -.7px;
+    line-height: 1.25 !important;
+    margin-bottom: 12px;
+}
+
+body:not(.settings-page) .main-content h2 {
+    color: #1d6038 !important;
+    font-size: 22px !important;
+    font-weight: 750 !important;
+    line-height: 1.35 !important;
+}
+
+body:not(.settings-page) .main-content h3,
+body:not(.settings-page) .main-content h4 {
+    color: #28563a !important;
+    font-weight: 700 !important;
+}
+
+body:not(.settings-page) .main-content p,
+body:not(.settings-page) .main-content label,
+body:not(.settings-page) .main-content span {
+    text-shadow: none;
+}
+
+body:not(.settings-page) .main-content p {
+    color: #53665a;
+    line-height: 1.65;
+}
+
+/* Header text: force strong contrast */
+body:not(.settings-page) .dashboard-header h1,
+body:not(.settings-page) .dashboard-header h2,
+body:not(.settings-page) .dashboard-header h3,
+body:not(.settings-page) .main-header h1,
+body:not(.settings-page) .main-header h2,
+body:not(.settings-page) .main-header h3,
+body:not(.settings-page) .topbar h1,
+body:not(.settings-page) .topbar h2,
+body:not(.settings-page) .topbar h3,
+body:not(.settings-page) .welcome-section h1,
+body:not(.settings-page) .welcome-section h2,
+body:not(.settings-page) .welcome-section h3 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+body:not(.settings-page) .dashboard-header p,
+body:not(.settings-page) .dashboard-header span,
+body:not(.settings-page) .main-header p,
+body:not(.settings-page) .main-header span,
+body:not(.settings-page) .topbar p,
+body:not(.settings-page) .welcome-section p,
+body:not(.settings-page) .welcome-section span {
+    color: #effff2 !important;
+}
+
+/* Financial figures */
+body:not(.settings-page) .stat-card,
+body:not(.settings-page) .summary-card,
+body:not(.settings-page) .metric-card,
+body:not(.settings-page) .dashboard-card,
+body:not(.settings-page) .stats-card {
+    color: #263d2e !important;
+}
+
+body:not(.settings-page) .stat-card h2,
+body:not(.settings-page) .stat-card h3,
+body:not(.settings-page) .summary-card h2,
+body:not(.settings-page) .summary-card h3,
+body:not(.settings-page) .metric-card h2,
+body:not(.settings-page) .metric-card h3 {
+    color: #205a36 !important;
+    font-weight: 750 !important;
+}
+
+body:not(.settings-page) .stat-card p,
+body:not(.settings-page) .summary-card p,
+body:not(.settings-page) .metric-card p,
+body:not(.settings-page) .dashboard-card p {
+    color: #56675b !important;
+}
+
+body:not(.settings-page) .stat-value,
+body:not(.settings-page) .stat-card .amount,
+body:not(.settings-page) .summary-card .amount,
+body:not(.settings-page) .metric-card .amount {
+    color: #17683b !important;
+    font-size: clamp(22px, 2vw, 30px) !important;
+    font-weight: 850 !important;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.4px;
+}
+
+/* Sidebar navigation */
+body:not(.settings-page) .sidebar a,
+body:not(.settings-page) .sidebar .nav-link,
+body:not(.settings-page) .sidebar nav a {
+    color: #effaf1 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.45 !important;
+    text-decoration: none !important;
+}
+
+body:not(.settings-page) .sidebar a:hover,
+body:not(.settings-page) .sidebar .nav-link:hover,
+body:not(.settings-page) .sidebar nav a:hover,
+body:not(.settings-page) .sidebar a.active,
+body:not(.settings-page) .sidebar .nav-link.active {
+    color: #ffffff !important;
+    font-weight: 750 !important;
+}
+
+/* Tables */
+body:not(.settings-page) .main-content table {
+    color: #293c30 !important;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+body:not(.settings-page) .main-content th {
+    color: #215c38 !important;
+    background: #eaf5ec !important;
+    font-weight: 750 !important;
+    text-align: left;
+}
+
+body:not(.settings-page) .main-content td {
+    color: #34483a !important;
+    background-color: rgba(255, 255, 255, .8);
+}
+
+body:not(.settings-page) .main-content th,
+body:not(.settings-page) .main-content td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #dce9de;
+}
+
+/* Form labels and controls */
+body:not(.settings-page) .main-content label {
+    color: #2c5038 !important;
+    font-weight: 650 !important;
+}
+
+body:not(.settings-page) .main-content input,
+body:not(.settings-page) .main-content select,
+body:not(.settings-page) .main-content textarea {
+    color: #20372a !important;
+    font-size: 14px !important;
+}
+
+body:not(.settings-page) .main-content input::placeholder,
+body:not(.settings-page) .main-content textarea::placeholder {
+    color: #78887c !important;
+    opacity: 1;
+}
+
+body:not(.settings-page) .main-content button,
+body:not(.settings-page) .main-content .button-primary {
+    font-weight: 700 !important;
+    letter-spacing: .1px;
+}
+
+
+/* BIASHARAEXPRESS - PREMIUM BRAND NAME AND RIBBON */
+
+body:not(.settings-page) .sidebar-header,
+body:not(.settings-page) .sidebar-brand,
+body:not(.settings-page) .brand,
+body:not(.settings-page) .logo-container {
+    position: relative !important;
+    overflow: hidden !important;
+    background: linear-gradient(125deg, #0b3822 0%, #176b3b 48%, #259651 100%) !important;
+    border: 1px solid rgba(188, 255, 205, .35) !important;
+    border-radius: 14px !important;
+    padding: 19px 15px !important;
+    margin: 10px 10px 22px !important;
+    box-shadow:
+        0 8px 22px rgba(11, 73, 37, .28),
+        inset 0 1px 0 rgba(255, 255, 255, .24) !important;
+}
+
+body:not(.settings-page) .sidebar-header::after,
+body:not(.settings-page) .sidebar-brand::after,
+body:not(.settings-page) .brand::after,
+body:not(.settings-page) .logo-container::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -100%;
+    width: 65%;
+    height: 220%;
+    pointer-events: none;
+    transform: rotate(25deg);
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, .13),
+        rgba(224, 255, 229, .32),
+        transparent
+    );
+    animation: be-brand-shine 6s ease-in-out infinite;
+}
+
+@keyframes be-brand-shine {
+    0%, 55% { left: -100%; }
+    85%, 100% { left: 150%; }
+}
+
+/* Brand text */
+body:not(.settings-page) .sidebar .logo,
+body:not(.settings-page) .sidebar .brand-name,
+body:not(.settings-page) .sidebar .app-name,
+body:not(.settings-page) .sidebar .sidebar-title,
+body:not(.settings-page) .sidebar .brand h1,
+body:not(.settings-page) .sidebar .brand h2,
+body:not(.settings-page) .sidebar-header h1,
+body:not(.settings-page) .sidebar-header h2,
+body:not(.settings-page) .sidebar-brand h1,
+body:not(.settings-page) .sidebar-brand h2 {
+    position: relative;
+    z-index: 1;
+    color: #ffffff !important;
+    font-family: "Segoe UI", Arial, sans-serif !important;
+    font-size: clamp(18px, 1.5vw, 23px) !important;
+    font-weight: 900 !important;
+    letter-spacing: .7px !important;
+    line-height: 1.3 !important;
+    text-shadow: 0 2px 9px rgba(0, 0, 0, .25) !important;
+}
+
+/* Gold-green accent ribbon */
+body:not(.settings-page) .sidebar-header,
+body:not(.settings-page) .sidebar-brand,
+body:not(.settings-page) .brand,
+body:not(.settings-page) .logo-container {
+    border-bottom: 3px solid #a8e6a9 !important;
+}
+
+/* Subtitle, when present */
+body:not(.settings-page) .sidebar .brand small,
+body:not(.settings-page) .sidebar .brand p,
+body:not(.settings-page) .sidebar .brand-subtitle,
+body:not(.settings-page) .sidebar-header p,
+body:not(.settings-page) .sidebar-brand p {
+    position: relative;
+    z-index: 1;
+    color: #d9f7df !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 1.2px !important;
+    text-transform: uppercase;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    body:not(.settings-page) .sidebar-header::after,
+    body:not(.settings-page) .sidebar-brand::after,
+    body:not(.settings-page) .brand::after,
+    body:not(.settings-page) .logo-container::after {
+        animation: none !important;
+    }
+}
+
+
+/* Compact BiasharaExpress brand ribbon */
+body:not(.settings-page) .sidebar-header,
+body:not(.settings-page) .sidebar-brand,
+body:not(.settings-page) .logo-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 13px 10px !important;
+    margin: 10px 9px 20px !important;
+    overflow: hidden !important;
+    border-radius: 13px !important;
+    background: linear-gradient(115deg, #103c27, #176b3b 65%, #26864b) !important;
+    border: 1px solid rgba(190, 244, 201, .38) !important;
+    border-bottom: 3px solid #c6a64a !important;
+    box-shadow: 0 6px 18px rgba(13, 75, 37, .22) !important;
+}
+
+/* Hide previous decorative shine layer */
+body:not(.settings-page) .sidebar-header::after,
+body:not(.settings-page) .sidebar-brand::after,
+body:not(.settings-page) .logo-container::after {
+    pointer-events: none !important;
+}
+
+/* Currency emblem */
+body:not(.settings-page) .sidebar-header::before,
+body:not(.settings-page) .sidebar-brand::before,
+body:not(.settings-page) .logo-container::before {
+    content: "KSh";
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 39px !important;
+    width: 39px !important;
+    height: 39px !important;
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+    background: linear-gradient(145deg, #fff0b4, #d8b44e) !important;
+    border: 2px solid rgba(255, 255, 255, .75) !important;
+    color: #16472b !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    letter-spacing: -.5px !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .2) !important;
+}
+
+/* Fit the business name */
+body:not(.settings-page) .sidebar-header h1,
+body:not(.settings-page) .sidebar-header h2,
+body:not(.settings-page) .sidebar-brand h1,
+body:not(.settings-page) .sidebar-brand h2,
+body:not(.settings-page) .sidebar .brand-name,
+body:not(.settings-page) .sidebar .app-name,
+body:not(.settings-page) .sidebar .logo {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #ffffff !important;
+    font-family: "Segoe UI", Arial, sans-serif !important;
+    font-size: clamp(13px, 1.1vw, 17px) !important;
+    font-weight: 850 !important;
+    letter-spacing: -.45px !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, .22) !important;
+}
+
+/* Prevent logo text and emblem from shrinking unpredictably */
+body:not(.settings-page) .sidebar-header *,
+body:not(.settings-page) .sidebar-brand *,
+body:not(.settings-page) .logo-container * {
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    body:not(.settings-page) .sidebar-header,
+    body:not(.settings-page) .sidebar-brand,
+    body:not(.settings-page) .logo-container {
+        padding: 10px 8px !important;
+        gap: 8px !important;
+    }
+
+    body:not(.settings-page) .sidebar-header h1,
+    body:not(.settings-page) .sidebar-header h2,
+    body:not(.settings-page) .sidebar-brand h1,
+    body:not(.settings-page) .sidebar-brand h2,
+    body:not(.settings-page) .sidebar .brand-name,
+    body:not(.settings-page) .sidebar .app-name,
+    body:not(.settings-page) .sidebar .logo {
+        font-size: 13px !important;
+    }
+}

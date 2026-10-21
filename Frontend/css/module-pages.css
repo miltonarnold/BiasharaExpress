@@ -1,0 +1,850 @@
+﻿/* BiasharaExpress module page design */
+:root {
+    --bx-green: #087443;
+    --bx-green-dark: #075c36;
+    --bx-green-soft: #e9f5ee;
+    --bx-page: #f4f8f5;
+    --bx-surface: #ffffff;
+    --bx-border: #dce8df;
+    --bx-text: #18352a;
+    --bx-muted: #63766a;
+    --bx-radius: 14px;
+    --bx-shadow: 0 5px 18px rgba(21, 63, 39, .07);
+}
+
+body {
+    color: var(--bx-text);
+    background: var(--bx-page);
+    font-family: "Segoe UI", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.contact-page,
+.debt-content,
+.finance-content,
+.module-content {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 28px;
+}
+
+.contact-heading,
+.debt-heading,
+.finance-heading,
+.module-heading {
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--bx-border);
+}
+
+.contact-heading h1,
+.debt-heading h1,
+.finance-heading h1,
+.module-heading h1 {
+    color: var(--bx-text);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 750;
+    letter-spacing: -.5px;
+}
+
+.contact-subtitle,
+.debt-muted,
+.finance-muted,
+.module-subtitle {
+    color: var(--bx-muted);
+    line-height: 1.65;
+}
+
+.contact-panel,
+.debt-panel,
+.finance-panel,
+.inventory-panel,
+.purchase-panel,
+.sales-panel {
+    min-width: 0;
+    box-sizing: border-box;
+    background: var(--bx-surface);
+    border: 1px solid var(--bx-border);
+    border-radius: var(--bx-radius);
+    padding: 24px;
+    margin-bottom: 22px;
+    box-shadow: var(--bx-shadow);
+}
+
+.contact-panel h2,
+.debt-panel h2,
+.finance-panel h2,
+.inventory-panel h2,
+.purchase-panel h2,
+.sales-panel h2 {
+    color: var(--bx-text);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.contact-grid,
+.debt-grid,
+.finance-grid,
+.inventory-grid,
+.purchase-grid {
+    gap: 18px;
+}
+
+.contact-field,
+.debt-field,
+.finance-field,
+.inventory-field,
+.purchase-field,
+.sales-field,
+.field {
+    min-width: 0;
+}
+
+.contact-field label,
+.debt-field label,
+.finance-field label,
+.inventory-field label,
+.purchase-field label,
+.sales-field label,
+.field label {
+    display: block;
+    margin-bottom: 7px;
+    color: #314b3d;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.contact-field input,
+.contact-field select,
+.contact-field textarea,
+.debt-field input,
+.debt-field select,
+.debt-field textarea,
+.finance-field input,
+.finance-field select,
+.finance-field textarea,
+.inventory-field input,
+.inventory-field select,
+.inventory-field textarea,
+.purchase-field input,
+.purchase-field select,
+.purchase-field textarea,
+.sales-field input,
+.sales-field select,
+.sales-field textarea,
+.contact-search input,
+.toolbar input,
+.toolbar select,
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    color: var(--bx-text);
+    background: #fff;
+    border: 1px solid #cbdacf;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 14px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.contact-field textarea,
+.debt-field textarea,
+.finance-field textarea,
+.inventory-field textarea,
+.purchase-field textarea,
+.sales-field textarea,
+.field textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.contact-field input:focus,
+.contact-field select:focus,
+.contact-field textarea:focus,
+.debt-field input:focus,
+.debt-field select:focus,
+.debt-field textarea:focus,
+.finance-field input:focus,
+.finance-field select:focus,
+.finance-field textarea:focus,
+.inventory-field input:focus,
+.inventory-field select:focus,
+.inventory-field textarea:focus,
+.purchase-field input:focus,
+.purchase-field select:focus,
+.purchase-field textarea:focus,
+.sales-field input:focus,
+.sales-field select:focus,
+.sales-field textarea:focus,
+.contact-search input:focus,
+.toolbar input:focus,
+.toolbar select:focus,
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--bx-green);
+    box-shadow: 0 0 0 3px rgba(8, 116, 67, .12);
+}
+
+.contact-actions,
+.contact-toolbar,
+.purchase-toolbar,
+.sales-add-row,
+.sales-fields-row {
+    gap: 12px;
+}
+
+.contact-actions button,
+.contact-button,
+.debt-button,
+.finance-button,
+.inventory-button,
+.purchase-button,
+.sales-button,
+button.primary,
+button[type="submit"] {
+    min-height: 42px;
+    padding: 10px 17px;
+    color: #fff;
+    background: var(--bx-green);
+    border: 1px solid var(--bx-green);
+    border-radius: 9px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+
+.contact-actions button:hover,
+.contact-button:hover,
+.debt-button:hover,
+.finance-button:hover,
+.inventory-button:hover,
+.purchase-button:hover,
+.sales-button:hover,
+button.primary:hover,
+button[type="submit"]:hover {
+    background: var(--bx-green-dark);
+    box-shadow: 0 4px 10px rgba(8, 116, 67, .16);
+}
+
+.debt-secondary,
+.finance-secondary,
+.inventory-secondary,
+.purchase-secondary,
+.sales-button-secondary,
+button.secondary {
+    color: #24543a;
+    background: #edf5ef;
+    border: 1px solid #d4e5d8;
+}
+
+.debt-secondary:hover,
+.finance-secondary:hover,
+.inventory-secondary:hover,
+.purchase-secondary:hover,
+.sales-button-secondary:hover,
+button.secondary:hover {
+    background: #deeee2;
+}
+
+.contact-stats,
+.debt-stats,
+.finance-stats,
+.inventory-stats,
+.purchase-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 16px;
+    margin: 0 0 22px;
+}
+
+.contact-stat,
+.debt-stat,
+.finance-stat,
+.inventory-stat,
+.purchase-stat {
+    min-width: 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid var(--bx-border);
+    border-top: 3px solid var(--bx-green);
+    border-radius: 12px;
+    box-shadow: var(--bx-shadow);
+}
+
+.contact-stat h3,
+.debt-stat h3,
+.finance-stat h3,
+.inventory-stat h3,
+.purchase-stat h3 {
+    margin-top: 0;
+    color: var(--bx-muted);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.contact-stat strong,
+.debt-stat strong,
+.finance-stat strong,
+.inventory-stat strong,
+.purchase-stat strong {
+    color: var(--bx-text);
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+.contact-table-wrap,
+.purchase-table-wrap,
+.sales-table-wrap,
+.table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid var(--bx-border);
+    border-radius: 12px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.contact-table,
+.purchase-table,
+.sales-table,
+.table-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 14px;
+}
+
+.contact-table th,
+.purchase-table th,
+.sales-table th,
+.table-wrap th {
+    padding: 14px 15px;
+    color: #294b37;
+    background: #edf5ef;
+    border-bottom: 1px solid var(--bx-border);
+    text-align: left;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.contact-table td,
+.purchase-table td,
+.sales-table td,
+.table-wrap td {
+    padding: 13px 15px;
+    color: #30483a;
+    border-bottom: 1px solid #e8efe9;
+    vertical-align: middle;
+}
+
+.contact-table tbody tr:nth-child(even),
+.purchase-table tbody tr:nth-child(even),
+.sales-table tbody tr:nth-child(even),
+.table-wrap tbody tr:nth-child(even) {
+    background: #fbfdfb;
+}
+
+.contact-table tbody tr:hover,
+.purchase-table tbody tr:hover,
+.sales-table tbody tr:hover,
+.table-wrap tbody tr:hover {
+    background: #f0f8f2;
+}
+
+.contact-table tr:last-child td,
+.purchase-table tr:last-child td,
+.sales-table tr:last-child td,
+.table-wrap tr:last-child td {
+    border-bottom: 0;
+}
+
+.contact-count,
+.contact-message,
+.debt-notice,
+.finance-notice,
+.inventory-notice,
+.purchase-notice,
+.sales-notice {
+    line-height: 1.6;
+}
+
+.contact-search {
+    max-width: 360px;
+}
+
+.debt-tabs,
+.finance-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 6px;
+    margin-bottom: 20px;
+    background: #eaf2ec;
+    border-radius: 11px;
+}
+
+.debt-tabs button,
+.finance-tabs button {
+    min-height: 40px;
+    padding: 9px 15px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.sales-layout {
+    gap: 22px;
+}
+
+.sales-empty {
+    padding: 24px;
+    color: var(--bx-muted);
+    text-align: center;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(8, 116, 67, .35);
+    outline-offset: 3px;
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    .contact-page,
+    .debt-content,
+    .finance-content,
+    .module-content {
+        padding: 20px;
+    }
+
+    .sales-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .contact-panel,
+    .debt-panel,
+    .finance-panel,
+    .inventory-panel,
+    .purchase-panel,
+    .sales-panel {
+        padding: 19px;
+    }
+}
+
+@media (max-width: 600px) {
+    .contact-page,
+    .debt-content,
+    .finance-content,
+    .module-content {
+        padding: 14px;
+    }
+
+    .contact-heading,
+    .debt-heading,
+    .finance-heading,
+    .module-heading {
+        align-items: flex-start;
+        margin-bottom: 18px;
+    }
+
+    .contact-heading h1,
+    .debt-heading h1,
+    .finance-heading h1,
+    .module-heading h1 {
+        font-size: 24px;
+    }
+
+    .contact-panel,
+    .debt-panel,
+    .finance-panel,
+    .inventory-panel,
+    .purchase-panel,
+    .sales-panel {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 11px;
+    }
+
+    .contact-stats,
+    .debt-stats,
+    .finance-stats,
+    .inventory-stats,
+    .purchase-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .contact-stat,
+    .debt-stat,
+    .finance-stat,
+    .inventory-stat,
+    .purchase-stat {
+        padding: 14px;
+    }
+
+    .contact-actions button,
+    .debt-button,
+    .finance-button,
+    .inventory-button,
+    .purchase-button,
+    .sales-button {
+        max-width: 100%;
+    }
+}
+
+/* ==========================================================
+   BIOEXPRESS PROFESSIONAL PAGE HEADER REDESIGN
+   Loaded after each page's existing inline styles.
+   ========================================================== */
+
+html {
+    background: #f0f5f1 !important;
+}
+
+body {
+    background: #f0f5f1 !important;
+    color: #173b29 !important;
+}
+
+.contact-page,
+.debt-content,
+.finance-content,
+.module-content {
+    max-width: 1500px !important;
+    margin: 0 auto !important;
+    padding: 28px !important;
+}
+
+/* Strong green hero headers */
+.contact-heading,
+.debt-heading,
+.finance-heading,
+.module-heading {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 18px !important;
+    min-height: 145px !important;
+    margin: 0 0 28px !important;
+    padding: 28px 30px !important;
+    color: #ffffff !important;
+    background: linear-gradient(120deg, #075c36 0%, #07804a 58%, #22a064 100%) !important;
+    border: 0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 28px rgba(7, 92, 54, .19) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.contact-heading::after,
+.debt-heading::after,
+.finance-heading::after,
+.module-heading::after {
+    content: "" !important;
+    position: absolute !important;
+    width: 180px !important;
+    height: 180px !important;
+    right: -45px !important;
+    top: -65px !important;
+    border: 25px solid rgba(255,255,255,.09) !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+}
+
+.contact-heading h1,
+.debt-heading h1,
+.finance-heading h1,
+.module-heading h1 {
+    color: #ffffff !important;
+    font-size: clamp(26px, 3vw, 35px) !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    letter-spacing: -.7px !important;
+    margin: 0 0 9px !important;
+}
+
+.contact-subtitle,
+.debt-heading p,
+.finance-heading p,
+.module-subtitle {
+    color: rgba(255,255,255,.88) !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    margin: 0 !important;
+}
+
+/* Main content panels */
+.contact-panel,
+.debt-panel,
+.finance-panel,
+.inventory-panel,
+.purchase-panel,
+.sales-panel {
+    background: #ffffff !important;
+    border: 1px solid #dce9df !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    margin-bottom: 23px !important;
+    box-shadow: 0 5px 20px rgba(22, 58, 35, .055) !important;
+}
+
+.contact-panel h2,
+.debt-panel h2,
+.finance-panel h2,
+.inventory-panel h2,
+.purchase-panel h2,
+.sales-panel h2 {
+    color: #174a30 !important;
+    font-size: 18px !important;
+    font-weight: 750 !important;
+    margin-top: 0 !important;
+}
+
+/* Form controls */
+.contact-field input,
+.contact-field select,
+.contact-field textarea,
+.debt-field input,
+.debt-field select,
+.debt-field textarea,
+.finance-field input,
+.finance-field select,
+.finance-field textarea,
+.inventory-field input,
+.inventory-field select,
+.inventory-field textarea,
+.purchase-field input,
+.purchase-field select,
+.purchase-field textarea,
+.sales-field input,
+.sales-field select,
+.sales-field textarea {
+    background: #fbfdfb !important;
+    color: #173b29 !important;
+    border: 1px solid #cbdccf !important;
+    border-radius: 9px !important;
+    min-height: 44px !important;
+    padding: 10px 12px !important;
+    box-sizing: border-box !important;
+}
+
+.contact-field label,
+.debt-field label,
+.finance-field label,
+.inventory-field label,
+.purchase-field label,
+.sales-field label {
+    color: #294d37 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+}
+
+.contact-field input:focus,
+.contact-field select:focus,
+.contact-field textarea:focus,
+.debt-field input:focus,
+.debt-field select:focus,
+.debt-field textarea:focus,
+.finance-field input:focus,
+.finance-field select:focus,
+.finance-field textarea:focus,
+.inventory-field input:focus,
+.inventory-field select:focus,
+.inventory-field textarea:focus,
+.purchase-field input:focus,
+.purchase-field select:focus,
+.purchase-field textarea:focus,
+.sales-field input:focus,
+.sales-field select:focus,
+.sales-field textarea:focus {
+    outline: none !important;
+    border-color: #07804a !important;
+    box-shadow: 0 0 0 3px rgba(7,128,74,.13) !important;
+}
+
+/* Buttons */
+.contact-actions button,
+.debt-button,
+.finance-button,
+.inventory-button,
+.purchase-button,
+.sales-button {
+    min-height: 42px !important;
+    border-radius: 9px !important;
+    font-weight: 700 !important;
+    transition: background .18s ease, box-shadow .18s ease !important;
+}
+
+.debt-primary,
+.finance-primary,
+.contact-actions button[type="submit"] {
+    color: #ffffff !important;
+    background: #087443 !important;
+    border-color: #087443 !important;
+}
+
+.debt-primary:hover,
+.finance-primary:hover,
+.contact-actions button[type="submit"]:hover {
+    background: #075c36 !important;
+}
+
+/* Summary cards */
+.debt-stats,
+.finance-stats,
+.inventory-stats,
+.purchase-stats {
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+}
+
+.debt-stat,
+.finance-stat,
+.inventory-stat,
+.purchase-stat {
+    background: linear-gradient(145deg, #ffffff, #f7fbf8) !important;
+    border: 1px solid #dce9df !important;
+    border-left: 4px solid #07804a !important;
+    border-radius: 13px !important;
+    padding: 20px !important;
+    box-shadow: 0 4px 15px rgba(22,58,35,.05) !important;
+}
+
+.debt-stat h3,
+.finance-stat h3,
+.inventory-stat h3,
+.purchase-stat h3 {
+    color: #617668 !important;
+    font-weight: 650 !important;
+}
+
+.debt-stat strong,
+.finance-stat strong,
+.inventory-stat strong,
+.purchase-stat strong {
+    color: #174a30 !important;
+    font-weight: 800 !important;
+}
+
+/* Table headers and rows */
+.contact-table-wrap,
+.purchase-table-wrap,
+.sales-table-wrap {
+    overflow-x: auto !important;
+    border: 1px solid #dce9df !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+}
+
+.contact-table,
+.purchase-table,
+.sales-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+.contact-table thead th,
+.purchase-table thead th,
+.sales-table thead th {
+    background: #e5f2e9 !important;
+    color: #174a30 !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .45px !important;
+    padding: 15px !important;
+    border-bottom: 1px solid #cfe1d4 !important;
+    white-space: nowrap !important;
+}
+
+.contact-table tbody td,
+.purchase-table tbody td,
+.sales-table tbody td {
+    padding: 14px 15px !important;
+    border-bottom: 1px solid #edf2ee !important;
+    color: #294638 !important;
+}
+
+.contact-table tbody tr:hover,
+.purchase-table tbody tr:hover,
+.sales-table tbody tr:hover {
+    background: #f0f8f2 !important;
+}
+
+/* Tabs */
+.debt-tabs,
+.finance-tabs {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 7px !important;
+    background: #e7f1e9 !important;
+    border-radius: 11px !important;
+}
+
+.debt-tabs button,
+.finance-tabs button {
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    padding: 10px 16px !important;
+}
+
+/* Responsive presentation */
+@media (max-width: 700px) {
+    .contact-page,
+    .debt-content,
+    .finance-content,
+    .module-content {
+        padding: 14px !important;
+    }
+
+    .contact-heading,
+    .debt-heading,
+    .finance-heading,
+    .module-heading {
+        min-height: 120px !important;
+        padding: 22px 20px !important;
+        border-radius: 14px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .contact-heading h1,
+    .debt-heading h1,
+    .finance-heading h1,
+    .module-heading h1 {
+        font-size: 25px !important;
+    }
+
+    .contact-panel,
+    .debt-panel,
+    .finance-panel,
+    .inventory-panel,
+    .purchase-panel,
+    .sales-panel {
+        padding: 16px !important;
+        border-radius: 12px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .debt-stats,
+    .finance-stats,
+    .inventory-stats,
+    .purchase-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+    }
+}
