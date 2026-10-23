@@ -27,28 +27,68 @@
     }
 
     async function downloadInitialData(auth, db, session, accountId) {
-        const pending = await db.getPending(500, accountId);
-        const pendingEntities = new Set(pending.map(item => item.entity));
-        let downloaded = 0;
+        function hasData(value) {
+            return value !== null &&
+                value !== undefined &&
+                !(Array.isArray(value) && value.length === 0);
+        }
 
-        for (const category of CATEGORIES) {
-            if (pendingEntities.has(category.entity)) {
-                continue;
-            }
+        function readBrowserValue(key) {
+            const raw = localStorage.getItem(key);
 
-            const localValue = await db.get(category.key);
-
-            // Only populate missing or empty categories. Never replace
-            // existing non-empty local data during initial download.
-            if (
-                localValue !== null &&
-                localValue !== undefined &&
-                !(Array.isArray(localValue) && localValue.length === 0)
-            ) {
-                continue;
+            if (raw === null) {
+                return { valid: true, value: null };
             }
 
             try {
+                return { valid: true, value: JSON.parse(raw) };
+            } catch {
+                return { valid: false, value: null };
+            }
+        }
+
+        const pending = await db.getPending(500, accountId);
+        const pendingEntities = new Set(
+            pending.map(item => item.entity)
+        );
+        let downloaded = 0;
+        let restored = 0;
+
+        for (const category of CATEGORIES) {
+            try {
+                const localValue = await db.get(category.key);
+                const browser = readBrowserValue(category.key);
+
+                if (!browser.valid) {
+                    console.warn(
+                        "BiasharaExpress: local browser data could not be parsed for " +
+                        category.entity + "; leaving it unchanged."
+                    );
+                    continue;
+                }
+
+                // Restore the screen-readable store from valid SQLite data.
+                if (hasData(localValue)) {
+                    if (!hasData(browser.value)) {
+                        localStorage.setItem(
+                            category.key,
+                            JSON.stringify(localValue)
+                        );
+                        restored++;
+                    }
+                    continue;
+                }
+
+                // Preserve an existing non-empty browser collection.
+                if (hasData(browser.value)) {
+                    continue;
+                }
+
+                // Do not pull server data while this category has queued changes.
+                if (pendingEntities.has(category.entity)) {
+                    continue;
+                }
+
                 const response = await fetch(
                     getApiBaseUrl() + "/api/sync/" + category.entity,
                     {
@@ -61,7 +101,10 @@
                 );
 
                 if (response.status === 401) {
-                    auth.clearSession();
+                    console.warn(
+                        "Synchronization returned HTTP 401. " +
+                        "Local data and queued changes have been preserved."
+                    );
                     return;
                 }
 
@@ -79,13 +122,15 @@
                     record => record.recordId === category.key
                 );
 
-                if (!matchingRecord || matchingRecord.payload == null) {
+                if (
+                    !matchingRecord ||
+                    !Array.isArray(matchingRecord.payload)
+                ) {
                     continue;
                 }
 
-                // Recheck the queue immediately before saving.
+                // Recheck both stores and the queue immediately before restoring.
                 const latestPending = await db.getPending(500, accountId);
-
                 if (
                     latestPending.some(
                         item => item.entity === category.entity
@@ -95,12 +140,12 @@
                 }
 
                 const latestLocalValue = await db.get(category.key);
+                const latestBrowser = readBrowserValue(category.key);
 
                 if (
-                    latestLocalValue !== null &&
-                    latestLocalValue !== undefined &&
-                    !(Array.isArray(latestLocalValue) &&
-                      latestLocalValue.length === 0)
+                    !latestBrowser.valid ||
+                    hasData(latestLocalValue) ||
+                    hasData(latestBrowser.value)
                 ) {
                     continue;
                 }
@@ -111,25 +156,36 @@
                     { sync: false }
                 );
 
+                // account-storage.js scopes this write to the active account.
+                localStorage.setItem(
+                    category.key,
+                    JSON.stringify(matchingRecord.payload)
+                );
+
                 downloaded++;
             } catch (error) {
                 console.warn(
-                    "BiasharaExpress download failed for " +
+                    "BiasharaExpress download/restore failed for " +
                     category.entity + ":",
                     error.message
                 );
             }
         }
 
+        if (restored > 0) {
+            console.info(
+                "BiasharaExpress: restored " + restored +
+                " categories from SQLite to the screen-readable store."
+            );
+        }
+
         if (downloaded > 0) {
             console.info(
-                "BiasharaExpress initial download:",
-                downloaded,
-                "categories populated."
+                "BiasharaExpress: downloaded " + downloaded +
+                " categories from the server."
             );
         }
     }
-
     async function synchronize() {
         if (syncing || !navigator.onLine) {
             return;
@@ -179,7 +235,9 @@
                 );
 
                 if (response.status === 401) {
-                    auth.clearSession();
+                    console.warn(
+                        "Synchronization returned HTTP 401. Keeping the local session and queued data for diagnosis."
+                    );
                     return;
                 }
 
@@ -243,3 +301,5 @@
     synchronize();
     window.setInterval(synchronize, SYNC_INTERVAL_MS);
 })();
+
+
