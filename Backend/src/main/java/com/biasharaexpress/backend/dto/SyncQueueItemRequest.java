@@ -1,4 +1,4 @@
-﻿package com.biasharaexpress.backend.dto;
+package com.biasharaexpress.backend.dto;
 
 public record SyncQueueItemRequest(
     String id,
