@@ -108,6 +108,8 @@
                     return;
                 }
 
+                console.info("SYNC DIAGNOSTIC: Batch response HTTP status:", response.status);
+
                 if (!response.ok) {
                     throw new Error("HTTP " + response.status);
                 }
@@ -186,41 +188,145 @@
             );
         }
     }
-    async function synchronize() {
-        if (syncing || !navigator.onLine) {
-            return;
+        async function canReachBiasharaBackend(token) {
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(() => controller.abort(), 8000);
+
+        try {
+            const response = await fetch(
+                getApiBaseUrl() + "/api/sync/products",
+                {
+                    method: "GET",
+                    cache: "no-store",
+                    headers: {
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    signal: controller.signal
+                }
+            );
+
+            console.info(
+                "BiasharaExpress connectivity: backend responded with HTTP",
+                response.status
+            );
+            return true;
+        } catch (error) {
+            console.warn(
+                "BiasharaExpress connectivity: backend unreachable:",
+                error.message
+            );
+            return false;
+        } finally {
+            window.clearTimeout(timeoutId);
         }
+    }
+async function synchronize() {
+        if (syncing) { return; }
 
         const auth = window.BiasharaAuth;
         const db = window.BiasharaSQLite;
 
         if (!auth || !db) {
+            console.warn("SYNC DIAGNOSTIC: Auth or SQLite adapter is unavailable.", {
+                authAvailable: !!auth,
+                sqliteAvailable: !!db
+            });
             return;
         }
 
         const session = auth.getSession();
 
         if (!session || !session.token || !session.account?.id) {
+            console.warn("SYNC DIAGNOSTIC: No complete authenticated session.", {
+                sessionAvailable: !!session,
+                tokenAvailable: !!session?.token,
+                accountIdAvailable: !!session?.account?.id
+            });
             return;
         }
+
+        console.info("SYNC DIAGNOSTIC: Session found for account.", session.account.id);
 
         syncing = true;
 
         try {
-            if (!(await auth.validateSession())) {
-                return;
-            }
+            if (!(await canReachBiasharaBackend(session.token))) { return; }
+            const sessionIsValid = await auth.validateSession();
+            console.info("SYNC DIAGNOSTIC: Session validation result:", sessionIsValid);
+            if (!sessionIsValid) { return; }
 
             const accountId = session.account.id;
 
             await db.init();
+            // Recover existing non-empty datasets for the active account once.
+            const recoveryMarker = "biasharaExpressLegacySyncQueuedV3:" + accountId;
+
+            const recoveryMarkerValue = localStorage.getItem(recoveryMarker);
+            console.info("SYNC DIAGNOSTIC: Recovery marker value:", recoveryMarkerValue);
+
+            if (recoveryMarkerValue !== "1") {
+                const queuedBeforeRecovery = await db.getPending(500, accountId);
+                const queuedKeys = new Set(
+                    queuedBeforeRecovery.map(item =>
+                        String(item.entity) + "|" +
+                        String(item.recordId ?? item.record_id ?? "")
+                    )
+                );
+
+                for (const category of CATEGORIES) {
+                    const queueKey = category.entity + "|" + category.key;
+
+                    if (queuedKeys.has(queueKey)) {
+                        continue;
+                    }
+
+                    const value = await db.get(category.key);
+
+                    console.info("SYNC DIAGNOSTIC: Local category read:", category.entity, {
+                        isArray: Array.isArray(value),
+                        valueType: typeof value,
+                        recordCount: Array.isArray(value) ? value.length : null
+                    });
+
+                    if (!Array.isArray(value) || value.length === 0) {
+                        continue;
+                    }
+
+                    await db.enqueue({
+                        entity: category.entity,
+                        recordId: category.key,
+                        operation: "upsert",
+                        payload: value
+                    });
+
+                    queuedKeys.add(queueKey);
+                    console.info(
+                        "Legacy recovery queued:",
+                        category.entity,
+                        value.length,
+                        "records."
+                    );
+                }
+
+                localStorage.setItem(recoveryMarker, "1");
+                console.info(
+                    "Legacy sync recovery queueing completed for the active account."
+                );
+            }
 
             const pending = await db.getPending(
                 QUEUE_LIMIT,
                 accountId
             );
 
+            console.info("SYNC DIAGNOSTIC: Pending queue count:", pending.length);
+
             if (pending.length > 0) {
+                console.info("SYNC DIAGNOSTIC: Sending batch upload.", {
+                    endpoint: getApiBaseUrl() + "/api/sync/batch",
+                    itemCount: pending.length
+                });
                 const response = await fetch(
                     getApiBaseUrl() + "/api/sync/batch",
                     {
@@ -240,6 +346,8 @@
                     );
                     return;
                 }
+
+                console.info("SYNC DIAGNOSTIC: Batch response HTTP status:", response.status);
 
                 if (!response.ok) {
                     throw new Error(
@@ -300,6 +408,17 @@
 
     synchronize();
     window.setInterval(synchronize, SYNC_INTERVAL_MS);
+
+// Retry synchronization when the app returns to the foreground.
+    document.addEventListener("visibilitychange", function biasharaConnectivityVisibility() {
+        if (document.visibilityState === "visible") {
+            synchronize();
+        }
+    });
 })();
+
+
+
+
 
 
