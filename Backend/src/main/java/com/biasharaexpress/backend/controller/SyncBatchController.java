@@ -1,4 +1,4 @@
-package com.biasharaexpress.backend.controller;
+﻿package com.biasharaexpress.backend.controller;
 
 import com.biasharaexpress.backend.dto.SyncBatchResponse;
 import com.biasharaexpress.backend.dto.SyncQueueItemRequest;
@@ -63,7 +63,7 @@ public class SyncBatchController {
                     );
                 } else {
                     JsonNode payload =
-                        objectMapper.valueToTree(item.payload());
+                        objectMapper.readTree(objectMapper.writeValueAsString(item.payload()));
 
                     if (payload == null || payload.isNull()) {
                         throw new IllegalArgumentException(
@@ -133,3 +133,4 @@ public class SyncBatchController {
         }
     }
 }
+
